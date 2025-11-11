@@ -1,297 +1,316 @@
 <!DOCTYPE html>
 <html>
 <head>
-&nbsp;&nbsp;<meta charset="utf-8">
-&nbsp;&nbsp;<title>ROBUX EMPIRE</title>
-&nbsp;&nbsp;<meta name="viewport" content="width=device-width, initial-scale=1">
-&nbsp;&nbsp;<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-&nbsp;&nbsp;<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-&nbsp;&nbsp;<style>
-&nbsp;&nbsp;&nbsp;&nbsp;@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap');
-&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;body {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;margin: 0;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #1e90ff);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-size: 400% 400%;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;animation: gradientShift 12s ease infinite;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-family: 'Poppins', sans-serif;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: #e0f7fa;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overflow-x: hidden;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position: relative;
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;@keyframes gradientShift {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0% { background-position: 0% 50%; }
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;50% { background-position: 100% 50%; }
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100% { background-position: 0% 50%; }
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;.dragon-container {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position: fixed;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;top: 50%; left: 50%;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transform: translate(-50%, -50%);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: 500px; height: 400px;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z-index: -1; pointer-events: none;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filter: drop-shadow(0 0 40px rgba(30, 144, 255, 0.8));
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;animation: dragonPulse 6s ease-in-out infinite;
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;@keyframes dragonPulse {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0%, 100% { transform: translate(-50%, -50%) scale(1); }
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 60px rgba(30,144,255,1)); }
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;.login { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999; }
-&nbsp;&nbsp;&nbsp;&nbsp;.login h1 { font-size: 64px; color: #00d4ff; text-shadow: 0 0 30px #00d4ff, 0 0 60px #0088cc; letter-spacing: 2px; }
-&nbsp;&nbsp;&nbsp;&nbsp;.inputbox { position: relative; width: 420px; margin: 18px; }
-&nbsp;&nbsp;&nbsp;&nbsp;.inputbox input { padding: 22px; font-size: 24px; width: 100%; border: 3px solid #00d4ff; border-radius: 50px; background: rgba(255,255,255,0.1); color: #e0f7fa; font-weight: bold; text-align: center; backdrop-filter: blur(5px); }
-&nbsp;&nbsp;&nbsp;&nbsp;.eye { position: absolute; right: 20px; top: 22px; cursor: pointer; font-size: 28px; color: #00d4ff; }
-&nbsp;&nbsp;&nbsp;&nbsp;.login button { padding: 22px; width: 420px; font-size: 26px; border: none; border-radius: 50px; background: linear-gradient(45deg, #00d4ff, #0088cc); color: #000; font-weight: 800; cursor: pointer; box-shadow: 0 0 50px rgba(0,212,255,0.8); transition: all 0.3s; }
-&nbsp;&nbsp;&nbsp;&nbsp;.login button:hover { transform: scale(1.08); box-shadow: 0 0 80px rgba(0,212,255,1); }
-&nbsp;&nbsp;&nbsp;&nbsp;.main { display: none; padding: 50px; min-height: 100vh; }
-&nbsp;&nbsp;&nbsp;&nbsp;.header { text-align: center; margin-bottom: 50px; }
-&nbsp;&nbsp;&nbsp;&nbsp;.header h1 { font-size: 72px; color: #e0f7fa; text-shadow: 0 0 40px #00d4ff, 0 0 80px #0088cc; }
-&nbsp;&nbsp;&nbsp;&nbsp;.total { background: linear-gradient(45deg, rgba(0,212,255,0.2), rgba(0,136,204,0.2)); padding: 35px; border-radius: 35px; box-shadow: 0 0 70px rgba(0,212,255,0.6); margin: 35px auto; max-width: 850px; text-align: center; border: 1px solid rgba(0,212,255,0.4); }
-&nbsp;&nbsp;&nbsp;&nbsp;.total h2 { font-size: 52px; color: #e0f7fa; text-shadow: 0 0 20px #00d4ff; }
-&nbsp;&nbsp;&nbsp;&nbsp;.total span { font-size: 82px; color: #00ff88; font-weight: 900; text-shadow: 0 0 30px #00ff88; }
-&nbsp;&nbsp;&nbsp;&nbsp;.logs { max-width: 1300px; margin: 0 auto; }
-&nbsp;&nbsp;&nbsp;&nbsp;.log { background: rgba(255,255,255,0.08); border-radius: 30px; padding: 28px; margin: 28px 0; box-shadow: 0 0 50px rgba(0,212,255,0.4); display: flex; align-items: center; transition: 0.4s; border: 1px solid rgba(0,212,255,0.3); position: relative; }
-&nbsp;&nbsp;&nbsp;&nbsp;.log:hover { transform: translateY(-12px); box-shadow: 0 0 90px rgba(0,212,255,0.8); }
-&nbsp;&nbsp;&nbsp;&nbsp;.log.selected { background: rgba(255,0,0,0.2); border: 2px solid #ff6b6b; }
-&nbsp;&nbsp;&nbsp;&nbsp;.avatar { width: 130px; height: 130px; border-radius: 50%; border: 6px solid #00d4ff; box-shadow: 0 0 40px #00d4ff; margin-right: 35px; }
-&nbsp;&nbsp;&nbsp;&nbsp;.info { flex: 1; }
-&nbsp;&nbsp;&nbsp;&nbsp;.info h3 { font-size: 34px; color: #e0f7fa; margin: 0; }
-&nbsp;&nbsp;&nbsp;&nbsp;.info p { font-size: 20px; color: #b2ebf2; margin: 8px 0; }
-&nbsp;&nbsp;&nbsp;&nbsp;.robux { color: #00ff88; font-weight: 900; font-size: 30px; }
-&nbsp;&nbsp;&nbsp;&nbsp;.copy { background: linear-gradient(45deg, #00d4ff, #0088cc); color: #000; padding: 16px 32px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 0 35px rgba(0,212,255,0.7); transition: 0.3s; }
-&nbsp;&nbsp;&nbsp;&nbsp;.copy:hover { background: #00ff88; box-shadow: 0 0 50px #00ff88; }
-&nbsp;&nbsp;&nbsp;&nbsp;.loading { text-align: center; color: #00d4ff; font-size: 26px; margin: 50px; animation: pulse 1.8s infinite; }
-&nbsp;&nbsp;&nbsp;&nbsp;@keyframes pulse { 0%{opacity:0.6}50%{opacity:1}100%{opacity:0.6} }
-&nbsp;&nbsp;&nbsp;&nbsp;.error { color: #ff6b6b; font-weight: bold; text-align: center; margin: 50px; }
-&nbsp;&nbsp;&nbsp;&nbsp;/* CONTROLS */
-&nbsp;&nbsp;&nbsp;&nbsp;#darkModeBtn, #scrollTopBtn, #selectModeBtn, #deleteBtn {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position: fixed;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 14px 28px;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: linear-gradient(45deg, #00d4ff, #0088cc);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: #000;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border: none;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 50px;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-weight: 800;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cursor: pointer;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box-shadow: 0 0 40px rgba(0,212,255,0.8);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z-index: 1000;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-family: Poppins;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transition: 0.3s;
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;#darkModeBtn:hover, #scrollTopBtn:hover, #selectModeBtn:hover, #deleteBtn:hover {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transform: scale(1.1);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box-shadow: 0 0 60px rgba(0,212,255,1);
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;#darkModeBtn { top: 25px; right: 25px; }
-&nbsp;&nbsp;&nbsp;&nbsp;#scrollTopBtn { bottom: 30px; right: 30px; }
-&nbsp;&nbsp;&nbsp;&nbsp;#selectModeBtn { top: 25px; right: 180px; }
-&nbsp;&nbsp;&nbsp;&nbsp;#deleteBtn { top: 25px; right: 340px; background: #ff6b6b; display: none; }
-&nbsp;&nbsp;&nbsp;&nbsp;#deleteBtn:hover { background: #ff4444; }
-&nbsp;&nbsp;&nbsp;&nbsp;.checkbox { position: absolute; top: 20px; left: 20px; width: 24px; height: 24px; border: 3px solid #00d4ff; border-radius: 6px; cursor: pointer; display: none; }
-&nbsp;&nbsp;&nbsp;&nbsp;.checkbox:checked { background: #00ff88; border-color: #00ff88; }
-&nbsp;&nbsp;&nbsp;&nbsp;.live-indicator { position:fixed; top:25px; left:25px; width:12px; height:12px; background:#00ff88; border-radius:50%; box-shadow:0 0 20px #00ff88; animation:blink 1.5s infinite; }
-&nbsp;&nbsp;&nbsp;&nbsp;@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
-&nbsp;&nbsp;&nbsp;&nbsp;.footer { text-align:center; padding:30px; color:#00d4ff; font-size:14px; margin-top:50px; }
-&nbsp;&nbsp;&nbsp;&nbsp;@media(max-width:768px){
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.log{flex-direction:column;text-align:center;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.avatar{margin:0 auto 20px;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.inputbox,.login button{width:90%!important;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#darkModeBtn, #scrollTopBtn, #selectModeBtn, #deleteBtn { position: static; display: inline-block; margin: 10px; }
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#selectModeBtn, #deleteBtn { position: relative; top: auto; right: auto; }
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;</style>
+  <meta charset="utf-8">
+  <title>ROBUX EMPIRE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap');
+    
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #1e90ff);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      font-family: 'Poppins', sans-serif;
+      color: #e0f7fa;
+      overflow-x: hidden;
+      position: relative;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .dragon-container {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px; height: 400px;
+      z-index: -1; pointer-events: none;
+      filter: drop-shadow(0 0 40px rgba(30, 144, 255, 0.8));
+      animation: dragonPulse 6s ease-in-out infinite;
+    }
+    @keyframes dragonPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 60px rgba(30,144,255,1)); }
+    }
+
+    .login { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999; }
+    .login h1 { font-size: 64px; color: #00d4ff; text-shadow: 0 0 30px #00d4ff, 0 0 60px #0088cc; letter-spacing: 2px; }
+    .inputbox { position: relative; width: 420px; margin: 18px; }
+    .inputbox input { padding: 22px; font-size: 24px; width: 100%; border: 3px solid #00d4ff; border-radius: 50px; background: rgba(255,255,255,0.1); color: #e0f7fa; font-weight: bold; text-align: center; backdrop-filter: blur(5px); }
+    .eye { position: absolute; right: 20px; top: 22px; cursor: pointer; font-size: 28px; color: #00d4ff; }
+    .login button { padding: 22px; width: 420px; font-size: 26px; border: none; border-radius: 50px; background: linear-gradient(45deg, #00d4ff, #0088cc); color: #000; font-weight: 800; cursor: pointer; box-shadow: 0 0 50px rgba(0,212,255,0.8); transition: all 0.3s; }
+    .login button:hover { transform: scale(1.08); box-shadow: 0 0 80px rgba(0,212,255,1); }
+
+    .main { display: none; padding: 50px; min-height: 100vh; }
+    .header { text-align: center; margin-bottom: 50px; }
+    .header h1 { font-size: 72px; color: #e0f7fa; text-shadow: 0 0 40px #00d4ff, 0 0 80px #0088cc; }
+    .total { background: linear-gradient(45deg, rgba(0,212,255,0.2), rgba(0,136,204,0.2)); padding: 35px; border-radius: 35px; box-shadow: 0 0 70px rgba(0,212,255,0.6); margin: 35px auto; max-width: 850px; text-align: center; border: 1px solid rgba(0,212,255,0.4); }
+    .total h2 { font-size: 52px; color: #e0f7fa; text-shadow: 0 0 20px #00d4ff; }
+    .total span { font-size: 82px; color: #00ff88; font-weight: 900; text-shadow: 0 0 30px #00ff88; }
+    .logs { max-width: 1300px; margin: 0 auto; }
+    .log { background: rgba(255,255,255,0.08); border-radius: 30px; padding: 28px; margin: 28px 0; box-shadow: 0 0 50px rgba(0,212,255,0.4); display: flex; align-items: center; transition: 0.4s; border: 1px solid rgba(0,212,255,0.3); position: relative; }
+    .log:hover { transform: translateY(-12px); box-shadow: 0 0 90px rgba(0,212,255,0.8); }
+    .log.selected { background: rgba(255,0,0,0.2); border: 2px solid #ff6b6b; }
+    .avatar { width: 130px; height: 130px; border-radius: 50%; border: 6px solid #00d4ff; box-shadow: 0 0 40px #00d4ff; margin-right: 35px; }
+    .info { flex: 1; }
+    .info h3 { font-size: 34px; color: #e0f7fa; margin: 0; }
+    .info p { font-size: 20px; color: #b2ebf2; margin: 8px 0; }
+    .robux { color: #00ff88; font-weight: 900; font-size: 30px; }
+    .copy { background: linear-gradient(45deg, #00d4ff, #0088cc); color: #000; padding: 16px 32px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 0 35px rgba(0,212,255,0.7); transition: 0.3s; }
+    .copy:hover { background: #00ff88; box-shadow: 0 0 50px #00ff88; }
+    .loading { text-align: center; color: #00d4ff; font-size: 26px; margin: 50px; }
+    .error { color: #ff6b6b; font-weight: bold; text-align: center; margin: 50px; }
+
+    /* CONTROLS */
+    #darkModeBtn, #scrollTopBtn, #selectModeBtn, #deleteBtn {
+      position: fixed;
+      padding: 14px 28px;
+      background: linear-gradient(45deg, #00d4ff, #0088cc);
+      color: #000;
+      border: none;
+      border-radius: 50px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 0 40px rgba(0,212,255,0.8);
+      z-index: 1000;
+      font-family: Poppins;
+      transition: 0.3s;
+    }
+    #darkModeBtn:hover, #scrollTopBtn:hover, #selectModeBtn:hover, #deleteBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 60px rgba(0,212,255,1);
+    }
+    #darkModeBtn { top: 25px; right: 25px; }
+    #scrollTopBtn { bottom: 30px; right: 30px; }
+    #selectModeBtn { top: 25px; right: 180px; }
+    #deleteBtn { top: 25px; right: 340px; background: #ff6b6b; display: none; }
+    #deleteBtn:hover { background: #ff4444; }
+
+    .checkbox { position: absolute; top: 20px; left: 20px; width: 24px; height: 24px; border: 3px solid #00d4ff; border-radius: 6px; cursor: pointer; display: none; }
+    .checkbox:checked { background: #00ff88; border-color: #00ff88; }
+
+    .live-indicator { position:fixed; top:25px; left:25px; width:12px; height:12px; background:#00ff88; border-radius:50%; box-shadow:0 0 20px #00ff88; animation:blink 1.5s infinite; }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+    .footer { text-align:center; padding:30px; color:#00d4ff; font-size:14px; margin-top:50px; }
+    .new-badge { position: absolute; top: 10px; right: 10px; background: #ff6b35; color: #fff; font-size: 12px; padding: 4px 8px; border-radius: 20px; font-weight: bold; animation: pulse 1s infinite; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+
+    @media(max-width:768px){
+      .log{flex-direction:column;text-align:center;}
+      .avatar{margin:0 auto 20px;}
+      .inputbox,.login button{width:90%!important;}
+      #darkModeBtn, #scrollTopBtn, #selectModeBtn, #deleteBtn { position: static; display: inline-block; margin: 10px; }
+    }
+  </style>
 </head>
 <body>
-&nbsp;&nbsp;<div class="live-indicator"></div>
-&nbsp;&nbsp;<div class="dragon-container">
-&nbsp;&nbsp;&nbsp;&nbsp;<svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ellipse cx="250" cy="220" rx="100" ry="120" fill="#2c3e50" stroke="#1a252f" stroke-width="4"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ellipse cx="250" cy="240" rx="70" ry="90" fill="#34495e"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ellipse cx="250" cy="100" rx="80" ry="70" fill="#2c3e50"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ellipse cx="250" cy="80" rx="50" ry="35" fill="#34495e"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<circle cx="225" cy="90" r="12" fill="#e74c3c"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<circle cx="275" cy="90" r="12" fill="#e74c3c"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<circle cx="228" cy="88" r="5" fill="#fff"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<circle cx="278" cy="88" r="5" fill="#fff"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<path d="M200,60 Q190,40 195,20" fill="none" stroke="#f1c40f" stroke-width="8" stroke-linecap="round"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<path d="M300,60 Q310,40 305,20" fill="none" stroke="#f1c40f" stroke-width="8" stroke-linecap="round"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<path d="M150,200 Q100,150 80,180 Q70,220 100,240 Q130,220 150,200" fill="#e67e22" opacity="0.9"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<path d="M350,200 Q400,150 420,180 Q430,220 400,240 Q370,220 350,200" fill="#e67e22" opacity="0.9"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<path d="M180,180 L170,160 L160,180 M210,170 L200,150 L190,170 M240,165 L230,145 L220,165 M270,170 L260,150 L250,170 M300,180 L290,160 L280,180" fill="none" stroke="#f1c40f" stroke-width="4"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<path d="M250,320 Q220,350 200,340 Q180,330 190,310 Q200,290 220,300 Q240,310 250,320" fill="#2c3e50"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ellipse cx="250" cy="60" rx="40" ry="25" fill="#ff6b35" opacity="0.6" filter="blur(10px)"/>
-&nbsp;&nbsp;&nbsp;&nbsp;</svg>
-&nbsp;&nbsp;</div>
-&nbsp;&nbsp;<button id="darkModeBtn" onclick="toggleDarkMode()">DARK MODE</button>
-&nbsp;&nbsp;<button id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">TOP</button>
-&nbsp;&nbsp;<button id="selectModeBtn" onclick="toggleSelectMode()">SELECT MODE</button>
-&nbsp;&nbsp;<button id="deleteBtn" onclick="deleteSelected()">DELETE SELECTED</button>
-&nbsp;&nbsp;<div class="login" id="login">
-&nbsp;&nbsp;&nbsp;&nbsp;<h1>ROBUX EMPIRE</h1>
-&nbsp;&nbsp;&nbsp;&nbsp;<div class="inputbox">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" id="key" placeholder="ENTER KEY">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="eye" onclick="toggleKey()">Eye</span>
-&nbsp;&nbsp;&nbsp;&nbsp;</div>
-&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="unlock()">UNLOCK EMPIRE</button>
-&nbsp;&nbsp;</div>
-&nbsp;&nbsp;<div class="main" id="main">
-&nbsp;&nbsp;&nbsp;&nbsp;<div class="header">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h1>TOTAL ROBUX: <span id="total">0</span></h1>
-&nbsp;&nbsp;&nbsp;&nbsp;</div>
-&nbsp;&nbsp;&nbsp;&nbsp;<div class="total">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h2>EMPIRE VALUE</h2>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="total2">0</span> Robux
-&nbsp;&nbsp;&nbsp;&nbsp;</div>
-&nbsp;&nbsp;&nbsp;&nbsp;<div class="logs" id="logs">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div class="loading">EMPIRE SYNCING... (15 sec max)</div>
-&nbsp;&nbsp;&nbsp;&nbsp;</div>
-&nbsp;&nbsp;&nbsp;&nbsp;<div class="error" id="error" style="display:none;"></div>
-&nbsp;&nbsp;</div>
-&nbsp;&nbsp;<div class="footer">
-&nbsp;&nbsp;&nbsp;&nbsp;© 2025 FlamesAXRCH Empire | Cairo, Egypt | All Systems Operational
-&nbsp;&nbsp;</div>
-&nbsp;&nbsp;<script>
-&nbsp;&nbsp;&nbsp;&nbsp;const KEY = "01axrch";
-&nbsp;&nbsp;&nbsp;&nbsp;const firebaseConfig = {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apiKey: "AIzaSyBUMdPMNAJpUzmyRfWjJ1RC7DsyoxcR0bk",
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authDomain: "flamesaxrch-empire.firebaseapp.com",
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;databaseURL: "https://flamesaxrch-empire-default-rtdb.europe-west1.firebasedatabase.app",
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;projectId: "flamesaxrch-empire",
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;storageBucket: "flamesaxrch-empire.firebasestorage.app",
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;messagingSenderId: "1067890777932",
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;appId: "1:1067890777932:web:a50536cc21933b1e2139e9"
-&nbsp;&nbsp;&nbsp;&nbsp;};
-&nbsp;&nbsp;&nbsp;&nbsp;firebase.initializeApp(firebaseConfig);
-&nbsp;&nbsp;&nbsp;&nbsp;const db = firebase.database();
-&nbsp;&nbsp;&nbsp;&nbsp;let lastCount = 0;
-&nbsp;&nbsp;&nbsp;&nbsp;let selectMode = false;
-&nbsp;&nbsp;&nbsp;&nbsp;let selectedIds = new Set();
-&nbsp;&nbsp;&nbsp;&nbsp;function toggleKey() {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const i = document.getElementById('key');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const e = document.querySelector('.eye');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i.type = i.type === 'password' ? 'text' : 'password';
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.textContent = i.type === 'password' ? 'Eye' : 'Hide';
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;function unlock() {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (document.getElementById('key').value === KEY) {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.getElementById('login').style.display = 'none';
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.getElementById('main').style.display = 'block';
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;load();
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setInterval(load, 5000);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert("WRONG KEY");
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;function toggleSelectMode() {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;selectMode = !selectMode;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const btn = document.getElementById('selectModeBtn');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;btn.textContent = selectMode ? 'CANCEL' : 'SELECT MODE';
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;btn.style.background = selectMode ? '#ff6b6b' : 'linear-gradient(45deg, #00d4ff, #0088cc)';
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.getElementById('deleteBtn').style.display = selectMode ? 'block' : 'none';
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.querySelectorAll('.checkbox').forEach(cb => cb.style.display = selectMode ? 'block' : 'none');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.querySelectorAll('.log').forEach(log => log.classList.remove('selected'));
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;selectedIds.clear();
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;function toggleSelect(id, checkbox) {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (!selectMode) return;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (checkbox.checked) {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;selectedIds.add(id);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;checkbox.parentElement.classList.add('selected');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;selectedIds.delete(id);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;checkbox.parentElement.classList.remove('selected');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.getElementById('deleteBtn').textContent = `DELETE (${selectedIds.size})`;
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;function deleteSelected() {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (selectedIds.size === 0) return;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (!confirm(`Delete ${selectedIds.size} account(s)?`)) return;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const updates = {};
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;selectedIds.forEach(id => {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;updates[`drops/${id}`] = null;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;db.ref().update(updates).then(() => {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showNotif(`DELETED ${selectedIds.size} ACCOUNT(S)`);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;selectedIds.clear();
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;toggleSelectMode();
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;load();
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}).catch(err => {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showNotif('DELETE FAILED');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.error(err);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;function showNotif(text) {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const n = document.createElement('div');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n.textContent = text;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#00ff88;color:#000;padding:15px 30px;border-radius:50px;font-weight:800;box-shadow:0 0 40px #00ff88;z-index:9999;opacity:0;transition:opacity 0.5s;';
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.body.appendChild(n);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setTimeout(() => n.style.opacity = '1', 100);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 500); }, 2000);
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;function load() {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;db.ref('drops').once('value').then(s => {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const data = s.val() || {};
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const entries = Object.entries(data).map(([id, val]) => ({ id, ...val }));
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const total = entries.reduce((sum, c) => sum + Number(c.robux), 0);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// NEWEST FIRST
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;entries.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const totalEl = document.getElementById('total');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const total2El = document.getElementById('total2');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (totalEl) animateValue(totalEl, parseInt(totalEl.textContent.replace(/,/g,'')) || 0, total, 800);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (total2El) animateValue(total2El, parseInt(total2El.textContent.replace(/,/g,'')) || 0, total, 800);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const html = entries.map(c => `
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div class="log" onclick="if(selectMode) document.getElementById('cb_${c.id}').click()">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="cb_$$ {c.id}" class="checkbox" onchange="toggleSelect(' $${c.id}', this)">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="${c.headshot}" class="avatar" onerror="this.src='https://i.imgur.com/removed.png'">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div class="info">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>$$ {c.user} (@ $${c.display})</h3>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p class="robux">${Number(c.robux).toLocaleString()} Robux</p>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="copy" onclick="event.stopPropagation(); navigator.clipboard.writeText('${c.cookie}'); showNotif('COPIED!')">COPY</button>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>`).join('');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const logs = document.getElementById('logs');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (logs) logs.innerHTML = html || "<h1 style='color:#e0f7fa;'>WAITING FOR DROP</h1>";
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (entries.length > lastCount) {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;audio.play().catch(() => {});
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showNotif(`+${entries.length - lastCount} NEW DROP(S)!`);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lastCount = entries.length;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const errorEl = document.getElementById('error');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (errorEl) errorEl.style.display = 'none';
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}).catch(err => {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const errorEl = document.getElementById('error');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (errorEl) {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorEl.textContent = 'DB ERROR: ' + err.message;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorEl.style.display = 'block';
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;function animateValue(el, start, end, duration) {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let startTime = null;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function step(now) {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (!startTime) startTime = now;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let progress = Math.min((now - startTime) / duration, 1);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;el.textContent = Math.floor(progress * (end - start) + start).toLocaleString();
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (progress < 1) requestAnimationFrame(step);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;requestAnimationFrame(step);
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;function toggleDarkMode() {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.body.classList.toggle('dark');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const btn = document.getElementById('darkModeBtn');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const isDark = document.body.classList.contains('dark');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;btn.textContent = isDark ? 'LIGHT MODE' : 'DARK MODE';
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localStorage.setItem('darkMode', isDark);
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;window.addEventListener('load', () => {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (localStorage.getItem('darkMode') === 'true') {
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.body.classList.add('dark');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const btn = document.getElementById('darkModeBtn');
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (btn) btn.textContent = 'LIGHT MODE';
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;});
-&nbsp;&nbsp;</script>
+
+  <div class="live-indicator"></div>
+
+  <div class="dragon-container">
+    <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="250" cy="220" rx="100" ry="120" fill="#2c3e50" stroke="#1a252f" stroke-width="4"/>
+      <ellipse cx="250" cy="240" rx="70" ry="90" fill="#34495e"/>
+      <ellipse cx="250" cy="100" rx="80" ry="70" fill="#2c3e50"/>
+      <ellipse cx="250" cy="80" rx="50" ry="35" fill="#34495e"/>
+      <circle cx="225" cy="90" r="12" fill="#e74c3c"/>
+      <circle cx="275" cy="90" r="12" fill="#e74c3c"/>
+      <circle cx="228" cy="88" r="5" fill="#fff"/>
+      <circle cx="278" cy="88" r="5" fill="#fff"/>
+      <path d="M200,60 Q190,40 195,20" fill="none" stroke="#f1c40f" stroke-width="8" stroke-linecap="round"/>
+      <path d="M300,60 Q310,40 305,20" fill="none" stroke="#f1c40f" stroke-width="8" stroke-linecap="round"/>
+      <path d="M150,200 Q100,150 80,180 Q70,220 100,240 Q130,220 150,200" fill="#e67e22" opacity="0.9"/>
+      <path d="M350,200 Q400,150 420,180 Q430,220 400,240 Q370,220 350,200" fill="#e67e22" opacity="0.9"/>
+      <path d="M180,180 L170,160 L160,180 M210,170 L200,150 L190,170 M240,165 L230,145 L220,165 M270,170 L260,150 L250,170 M300,180 L290,160 L280,180" fill="none" stroke="#f1c40f" stroke-width="4"/>
+      <path d="M250,320 Q220,350 200,340 Q180,330 190,310 Q200,290 220,300 Q240,310 250,320" fill="#2c3e50"/>
+      <ellipse cx="250" cy="60" rx="40" ry="25" fill="#ff6b35" opacity="0.6" filter="blur(10px)"/>
+    </svg>
+  </div>
+
+  <button id="darkModeBtn" onclick="toggleDarkMode()">DARK MODE</button>
+  <button id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">TOP</button>
+  <button id="selectModeBtn" onclick="toggleSelectMode()">SELECT MODE</button>
+  <button id="deleteBtn" onclick="deleteSelected()">DELETE SELECTED</button>
+
+  <div class="login" id="login">
+    <h1>ROBUX EMPIRE</h1>
+    <div class="inputbox">
+      <input type="password" id="key" placeholder="ENTER KEY">
+      <span class="eye" onclick="toggleKey()">Eye</span>
+    </div>
+    <button onclick="unlock()">UNLOCK EMPIRE</button>
+  </div>
+
+  <div class="main" id="main">
+    <div class="header">
+      <h1>TOTAL ROBUX: <span id="total">0</span></h1>
+    </div>
+    <div class="total">
+      <h2>EMPIRE VALUE</h2>
+      <span id="total2">0</span> Robux
+    </div>
+    <div class="logs" id="logs">
+      <div class="loading">WAITING FOR LIVE DROP...</div>
+    </div>
+    <div class="error" id="error" style="display:none;"></div>
+  </div>
+
+  <div class="footer">
+    © 2025 FlamesAXRCH Empire | Cairo, Egypt | LIVE SYNC ACTIVE
+  </div>
+
+  <script>
+    const KEY = "01axrch";
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUMdPMNAJpUzmyRfWjJ1RC7DsyoxcR0bk",
+      authDomain: "flamesaxrch-empire.firebaseapp.com",
+      databaseURL: "https://flamesaxrch-empire-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "flamesaxrch-empire",
+      storageBucket: "flamesaxrch-empire.firebasestorage.app",
+      messagingSenderId: "1067890777932",
+      appId: "1:1067890777932:web:a50536cc21933b1e2139e9"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let selectMode = false;
+    let selectedIds = new Set();
+    let lastCount = 0;
+
+    function toggleKey() {
+      const i = document.getElementById('key');
+      const e = document.querySelector('.eye');
+      i.type = i.type === 'password' ? 'text' : 'password';
+      e.textContent = i.type === 'password' ? 'Eye' : 'Hide';
+    }
+
+    function unlock() {
+      if (document.getElementById('key').value === KEY) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('main').style.display = 'block';
+        startRealtimeListener(); // INSTANT SYNC
+      } else {
+        alert("WRONG KEY");
+      }
+    }
+
+    // REAL-TIME LISTENER (INSTANT)
+    function startRealtimeListener() {
+      db.ref('drops').on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        const entries = Object.entries(data).map(([id, val]) => ({ id, ...val }));
+        const total = entries.reduce((sum, c) => sum + Number(c.robux), 0);
+
+        // NEWEST FIRST
+        entries.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+        animateValue('total', parseInt(document.getElementById('total')?.textContent.replace(/,/g,'') || '0'), total, 800);
+        animateValue('total2', parseInt(document.getElementById('total2')?.textContent.replace(/,/g,'') || '0'), total, 800);
+
+        const html = entries.map((c, i) => `
+          <div class="log" onclick="if(selectMode) document.getElementById('cb_${c.id}').click()">
+            <input type="checkbox" id="cb_${c.id}" class="checkbox" onchange="toggleSelect('${c.id}', this)">
+            ${i === 0 && entries.length > lastCount ? '<div class="new-badge">NEW</div>' : ''}
+            <img src="${c.headshot}" class="avatar" onerror="this.src='https://i.imgur.com/removed.png'">
+            <div class="info">
+              <h3>${c.user} (@${c.display})</h3>
+              <p class="robux">${Number(c.robux).toLocaleString()} Robux</p>
+              <button class="copy" onclick="event.stopPropagation(); navigator.clipboard.writeText('${c.cookie}'); showNotif('COPIED!')">COPY</button>
+            </div>
+          </div>`).join('');
+
+        document.getElementById('logs').innerHTML = html || "<h1 style='color:#e0f7fa;'>WAITING FOR DROP</h1>";
+
+        if (entries.length > lastCount) {
+          const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
+          audio.play().catch(() => {});
+          showNotif(`+${entries.length - lastCount} NEW DROP(S)!`);
+        }
+        lastCount = entries.length;
+      }, (error) => {
+        document.getElementById('error').textContent = 'DB ERROR: ' + error.message;
+        document.getElementById('error').style.display = 'block';
+      });
+    }
+
+    function animateValue(el, start, end, duration) {
+      if (!el) return;
+      let startTime = null;
+      function step(now) {
+        if (!startTime) startTime = now;
+        let progress = Math.min((now - startTime) / duration, 1);
+        el.textContent = Math.floor(progress * (end - start) + start).toLocaleString();
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function showNotif(text) {
+      const n = document.createElement('div');
+      n.textContent = text;
+      n.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#00ff88;color:#000;padding:15px 30px;border-radius:50px;font-weight:800;box-shadow:0 0 40px #00ff88;z-index:9999;opacity:0;transition:opacity 0.5s;';
+      document.body.appendChild(n);
+      setTimeout(() => n.style.opacity = '1', 100);
+      setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 500); }, 2000);
+    }
+
+    function toggleSelectMode() {
+      selectMode = !selectMode;
+      const btn = document.getElementById('selectModeBtn');
+      btn.textContent = selectMode ? 'CANCEL' : 'SELECT MODE';
+      btn.style.background = selectMode ? '#ff6b6b' : 'linear-gradient(45deg, #00d4ff, #0088cc)';
+      document.getElementById('deleteBtn').style.display = selectMode ? 'block' : 'none';
+      document.querySelectorAll('.checkbox').forEach(cb => cb.style.display = selectMode ? 'block' : 'none');
+      document.querySelectorAll('.log').forEach(log => log.classList.remove('selected'));
+      selectedIds.clear();
+    }
+
+    function toggleSelect(id, checkbox) {
+      if (!selectMode) return;
+      if (checkbox.checked) {
+        selectedIds.add(id);
+        checkbox.parentElement.classList.add('selected');
+      } else {
+        selectedIds.delete(id);
+        checkbox.parentElement.classList.remove('selected');
+      }
+      document.getElementById('deleteBtn').textContent = `DELETE (${selectedIds.size})`;
+    }
+
+    function deleteSelected() {
+      if (selectedIds.size === 0) return;
+      if (!confirm(`Delete ${selectedIds.size} account(s)?`)) return;
+
+      const updates = {};
+      selectedIds.forEach(id => updates[`drops/${id}`] = null);
+      db.ref().update(updates).then(() => {
+        showNotif(`DELETED ${selectedIds.size} ACCOUNT(S)`);
+        selectedIds.clear();
+        toggleSelectMode();
+      });
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+      const btn = document.getElementById('darkModeBtn');
+      const isDark = document.body.classList.contains('dark');
+      btn.textContent = isDark ? 'LIGHT MODE' : 'DARK MODE';
+      localStorage.setItem('darkMode', isDark);
+    }
+
+    window.addEventListener('load', () => {
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark');
+        const btn = document.getElementById('darkModeBtn');
+        if (btn) btn.textContent = 'LIGHT MODE';
+      }
+    });
+  </script>
 </body>
 </html>
