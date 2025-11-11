@@ -35,9 +35,68 @@
     .loading{text-align:center;color:#0ff;font-size:24px;margin:40px;animation:pulse 1.5s infinite;}
     @keyframes pulse{0%{opacity:0.6}50%{opacity:1}100%{opacity:0.6}}
     .error{color:#f00;font-weight:bold;text-align:center;margin:40px;}
+
+    /* DARK MODE STYLES */
+    .dark body {
+      background: linear-gradient(135deg, #000, #111, #000) !important;
+      color: #0f0 !important;
+    }
+    .dark .login {
+      background: rgba(0,0,0,0.95) !important;
+    }
+    .dark .login h1 {
+      color: #0ff !important;
+      text-shadow: 0 0 30px #0ff, 0 0 60px #00f !important;
+    }
+    .dark .inputbox input {
+      background: #111 !important;
+      color: #0f0 !important;
+      border: 2px solid #0ff !important;
+    }
+    .dark .login button {
+      background: #0ff !important;
+      color: #000 !important;
+      box-shadow: 0 0 40px #0ff !important;
+    }
+    .dark .header h1 {
+      color: #0f0 !important;
+      text-shadow: 0 0 40px #000, 0 0 80px #0ff !important;
+    }
+    .dark .total {
+      background: linear-gradient(45deg, #0f0, #0ff) !important;
+    }
+    .dark .total h2, .dark .total span {
+      color: #000 !important;
+    }
+    .dark .log {
+      background: rgba(0, 255, 0, 0.1) !important;
+      border: 1px solid #0ff !important;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.4) !important;
+    }
+    .dark .log:hover {
+      box-shadow: 0 0 60px #0ff !important;
+    }
+    .dark .info h3, .dark .robux {
+      color: #0f0 !important;
+    }
+    .dark .copy {
+      background: #0ff !important;
+      color: #000 !important;
+    }
+    .dark .copy:hover {
+      background: #0f0 !important;
+    }
+    .dark .loading, .dark .error {
+      color: #0ff !important;
+    }
   </style>
 </head>
 <body>
+  <!-- DARK MODE TOGGLE BUTTON -->
+  <button id="darkModeBtn" onclick="toggleDarkMode()" style="position:fixed;top:20px;right:20px;padding:12px 24px;background:#0ff;color:#000;border:none;border-radius:50px;font-weight:800;cursor:pointer;box-shadow:0 0 30px #0ff;z-index:1000;transition:0.3s;">
+    🌙 DARK MODE
+  </button>
+
   <div class="login" id="login">
     <h1>ROBUX EMPIRE</h1>
     <div class="inputbox">
@@ -46,7 +105,6 @@
     </div>
     <button onclick="unlock()">UNLOCK EMPIRE</button>
   </div>
-
   <div class="main" id="main">
     <div class="header">
       <h1>TOTAL ROBUX: <span id="total">0</span></h1>
@@ -63,7 +121,6 @@
 
   <script>
     const KEY = "01axrch";
-
     const firebaseConfig = {
       apiKey: "AIzaSyBUMdPMNAJpUzmyRfWjJ1RC7DsyoxcR0bk",
       authDomain: "flamesaxrch-empire.firebaseapp.com",
@@ -73,7 +130,6 @@
       messagingSenderId: "1067890777932",
       appId: "1:1067890777932:web:a50536cc21933b1e2139e9"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let lastCount = 0;
@@ -119,7 +175,6 @@
           document.getElementById('total2').textContent = total.toLocaleString();
           document.getElementById('logs').innerHTML = html.join('') || "<h1 style='color:#fff;'>WAITING FOR DROP</h1>";
           document.getElementById('error').style.display = 'none';
-
           if (arr.length > lastCount) {
             const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
             audio.play().catch(() => {});
@@ -133,6 +188,29 @@
           document.getElementById('error').style.display = 'block';
         });
     }
+
+    // DARK MODE TOGGLE FUNCTION
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+      const btn = document.getElementById('darkModeBtn');
+      const isDark = document.body.classList.contains('dark');
+      btn.textContent = isDark ? '☀️ LIGHT MODE' : '🌙 DARK MODE';
+      btn.style.background = isDark ? '#000' : '#0ff';
+      btn.style.color = isDark ? '#0ff' : '#000';
+      btn.style.boxShadow = isDark ? '0 0 30px #0ff' : '0 0 30px #0ff';
+      localStorage.setItem('darkMode', isDark);
+    }
+
+    // AUTO-APPLY DARK MODE ON LOAD
+    window.addEventListener('load', () => {
+      if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark');
+        const btn = document.getElementById('darkModeBtn');
+        btn.textContent = '☀️ LIGHT MODE';
+        btn.style.background = '#000';
+        btn.style.color = '#0ff';
+      }
+    });
   </script>
 </body>
 </html>
