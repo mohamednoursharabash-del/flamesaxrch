@@ -8,113 +8,269 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap');
-    body{margin:0;background:linear-gradient(135deg,#ff00aa,#00ffff,#ffff00);font-family:'Poppins',sans-serif;color:#000;overflow-x:hidden;position:relative;}
     
-    /* REAL FLYING DRAGON SVG (EPIC, SMOOTH, DETAILED) */
+    /* SMOOTH COOL GRADIENT BACKGROUND */
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #1e90ff);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      font-family: 'Poppins', sans-serif;
+      color: #e0f7fa;
+      overflow-x: hidden;
+      position: relative;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* EPIC STANDING DRAGON (CENTERED, GLOWING) */
     .dragon-container {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 400px;
       z-index: -1;
       pointer-events: none;
-      overflow: hidden;
+      filter: drop-shadow(0 0 40px rgba(30, 144, 255, 0.8));
+      animation: dragonPulse 6s ease-in-out infinite;
     }
-    .dragon {
-      position: absolute;
-      width: 250px;
-      height: auto;
-      animation: fly 20s linear infinite;
-      filter: drop-shadow(0 0 20px rgba(0,255,255,0.8));
+    @keyframes dragonPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 40px rgba(30,144,255,0.8)); }
+      50% { transform: translate(-50%, -50%) scale(1.05); filter: drop-shadow(0 0 60px rgba(30,144,255,1)); }
     }
-    @keyframes fly {
-      0% { transform: translateX(-300px) translateY(20vh) rotate(-5deg); }
-      25% { transform: translateX(30vw) translateY(10vh) rotate(2deg); }
-      50% { transform: translateX(60vw) translateY(35vh) rotate(-3deg); }
-      75% { transform: translateX(90vw) translateY(15vh) rotate(4deg); }
-      100% { transform: translateX(120vw) translateY(25vh) rotate(-5deg); }
+
+    .login {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
     }
-    .dragon svg {
+    .login h1 {
+      font-size: 64px;
+      color: #00d4ff;
+      text-shadow: 0 0 30px #00d4ff, 0 0 60px #0088cc;
+      letter-spacing: 2px;
+    }
+    .inputbox {
+      position: relative;
+      width: 420px;
+      margin: 18px;
+    }
+    .inputbox input {
+      padding: 22px;
+      font-size: 24px;
       width: 100%;
-      height: auto;
+      border: 3px solid #00d4ff;
+      border-radius: 50px;
+      background: rgba(255,255,255,0.1);
+      color: #e0f7fa;
+      font-weight: bold;
+      text-align: center;
+      backdrop-filter: blur(5px);
+    }
+    .eye {
+      position: absolute;
+      right: 20px;
+      top: 22px;
+      cursor: pointer;
+      font-size: 28px;
+      color: #00d4ff;
+    }
+    .login button {
+      padding: 22px;
+      width: 420px;
+      font-size: 26px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(45deg, #00d4ff, #0088cc);
+      color: #000;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 0 50px rgba(0,212,255,0.8);
+      transition: all 0.3s;
+    }
+    .login button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 80px rgba(0,212,255,1);
     }
 
-    .login{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:999;}
-    .login h1{font-size:60px;color:#0ff;text-shadow:0 0 30px #0ff,0 0 60px #f0f;}
-    .inputbox{position:relative;width:400px;margin:15px;}
-    .inputbox input{padding:20px;font-size:24px;width:100%;border:none;border-radius:50px;background:#fff;color:#000;font-weight:bold;text-align:center;}
-    .eye{position:absolute;right:20px;top:20px;cursor:pointer;font-size:28px;color:#0ff;}
-    .login button{padding:20px;width:400px;font-size:24px;border:none;border-radius:50px;background:#0ff;color:#000;font-weight:800;cursor:pointer;box-shadow:0 0 40px #0ff;}
-    .login button:hover{transform:scale(1.1);box-shadow:0 0 80px #f0f;}
-    .main{display:none;padding:40px;min-height:100vh;}
-    .header{text-align:center;margin-bottom:40px;}
-    .header h1{font-size:70px;color:#fff;text-shadow:0 0 40px #000,0 0 80px #0ff;}
-    .total{background:linear-gradient(45deg,#0ff,#f0f);padding:30px;border-radius:30px;box-shadow:0 0 60px rgba(0,255,255,0.8);margin:30px auto;max-width:800px;}
-    .total h2{font-size:50px;color:#000;text-shadow:0 0 20px #fff;}
-    .total span{font-size:80px;color:#000;font-weight:900;}
-    .logs{max-width:1200px;margin:0 auto;}
-    .log{background:rgba(255,255,255,0.95);border-radius:25px;padding:25px;margin:25px 0;box-shadow:0 0 40px rgba(0,255,255,0.6);display:flex;align-items:center;transition:0.3s;}
-    .log:hover{transform:translateY(-10px);box-shadow:0 0 80px #0ff;}
-    .avatar{width:120px;height:120px;border-radius:50%;border:6px solid #0ff;box-shadow:0 0 30px #0ff;margin-right:30px;}
-    .info{flex:1;}
-    .info h3{font-size:32px;color:#000;margin:0;}
-    .info p{font-size:18px;color:#333;margin:6px 0;}
-    .robux{color:#0f0;font-weight:900;font-size:28px;}
-    .copy{background:#0ff;color:#000;padding:15px 30px;border-radius:50px;font-weight:bold;cursor:pointer;box-shadow:0 0 30px #0ff;}
-    .copy:hover{background:#f0f;}
-    .loading{text-align:center;color:#0ff;font-size:24px;margin:40px;animation:pulse 1.5s infinite;}
-    @keyframes pulse{0%{opacity:0.6}50%{opacity:1}100%{opacity:0.6}}
-    .error{color:#f00;font-weight:bold;text-align:center;margin:40px;}
+    .main { display: none; padding: 50px; min-height: 100vh; }
+    .header { text-align: center; margin-bottom: 50px; }
+    .header h1 {
+      font-size: 72px;
+      color: #e0f7fa;
+      text-shadow: 0 0 40px #00d4ff, 0 0 80px #0088cc;
+    }
+    .total {
+      background: linear-gradient(45deg, rgba(0,212,255,0.2), rgba(0,136,204,0.2));
+      padding: 35px;
+      border-radius: 35px;
+      box-shadow: 0 0 70px rgba(0,212,255,0.6);
+      margin: 35px auto;
+      max-width: 850px;
+      text-align: center;
+      border: 1px solid rgba(0,212,255,0.4);
+    }
+    .total h2 {
+      font-size: 52px;
+      color: #e0f7fa;
+      text-shadow: 0 0 20px #00d4ff;
+    }
+    .total span {
+      font-size: 82px;
+      color: #00ff88;
+      font-weight: 900;
+      text-shadow: 0 0 30px #00ff88;
+    }
+    .logs { max-width: 1300px; margin: 0 auto; }
+    .log {
+      background: rgba(255,255,255,0.08);
+      border-radius: 30px;
+      padding: 28px;
+      margin: 28px 0;
+      box-shadow: 0 0 50px rgba(0,212,255,0.4);
+      display: flex;
+      align-items: center;
+      transition: 0.4s;
+      border: 1px solid rgba(0,212,255,0.3);
+    }
+    .log:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 0 90px rgba(0,212,255,0.8);
+    }
+    .avatar {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 6px solid #00d4ff;
+      box-shadow: 0 0 40px #00d4ff;
+      margin-right: 35px;
+    }
+    .info { flex: 1; }
+    .info h3 {
+      font-size: 34px;
+      color: #e0f7fa;
+      margin: 0;
+    }
+    .info p {
+      font-size: 20px;
+      color: #b2ebf2;
+      margin: 8px 0;
+    }
+    .robux {
+      color: #00ff88;
+      font-weight: 900;
+      font-size: 30px;
+    }
+    .copy {
+      background: linear-gradient(45deg, #00d4ff, #0088cc);
+      color: #000;
+      padding: 16px 32px;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 35px rgba(0,212,255,0.7);
+      transition: 0.3s;
+    }
+    .copy:hover {
+      background: #00ff88;
+      box-shadow: 0 0 50px #00ff88;
+    }
+    .loading {
+      text-align: center;
+      color: #00d4ff;
+      font-size: 26px;
+      margin: 50px;
+      animation: pulse 1.8s infinite;
+    }
+    .error {
+      color: #ff6b6b;
+      font-weight: bold;
+      text-align: center;
+      margin: 50px;
+    }
 
-    /* DARK MODE */
-    .dark body {background:linear-gradient(135deg,#000,#111,#000)!important;color:#0f0!important;}
-    .dark .login {background:rgba(0,0,0,0.95)!important;}
-    .dark .login h1 {color:#0ff!important;text-shadow:0 0 30px #0ff,0 0 60px #00f!important;}
-    .dark .inputbox input {background:#111!important;color:#0f0!important;border:2px solid #0ff!important;}
-    .dark .login button {background:#0ff!important;color:#000!important;}
-    .dark .header h1 {color:#0f0!important;text-shadow:0 0 40px #000,0 0 80px #0ff!important;}
-    .dark .total {background:linear-gradient(45deg,#0f0,#0ff)!important;}
-    .dark .total span, .dark .total h2 {color:#000!important;}
-    .dark .log {background:rgba(0,255,0,0.1)!important;border:1px solid #0ff!important;}
-    .dark .copy {background:#0ff!important;color:#000!important;}
-    .dark .copy:hover {background:#0f0!important;}
-    .dark .dragon path {fill: #0f0 !important; filter: drop-shadow(0 0 15px #0ff);}
+    /* DARK MODE (EVEN COOLER) */
+    .dark body {
+      background: linear-gradient(135deg, #0a0a1a, #0f0f2e, #1a1a3e, #16213e);
+      animation: gradientShiftDark 15s ease infinite;
+    }
+    @keyframes gradientShiftDark {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .dark .dragon path { fill: #00ff88; filter: drop-shadow(0 0 30px #00ff88); }
+    .dark .total span { color: #00ff88; }
+    .dark .robux { color: #00ff88; }
+
+    /* DARK MODE BUTTON */
+    #darkModeBtn {
+      position: fixed;
+      top: 25px;
+      right: 25px;
+      padding: 14px 28px;
+      background: linear-gradient(45deg, #00d4ff, #0088cc);
+      color: #000;
+      border: none;
+      border-radius: 50px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 0 40px rgba(0,212,255,0.8);
+      z-index: 1000;
+      font-family: Poppins;
+      transition: 0.3s;
+    }
+    #darkModeBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 60px rgba(0,212,255,1);
+    }
   </style>
 </head>
 <body>
 
-  <!-- EPIC FLYING DRAGON (SVG) -->
+  <!-- EPIC CENTERED DRAGON (STANDING, GLOWING) -->
   <div class="dragon-container">
-    <div class="dragon">
-      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#FF4500"/>
-            <stop offset="100%" stop-color="#FF8C00"/>
-          </linearGradient>
-        </defs>
-        <!-- Body -->
-        <path d="M100,150 Q80,140 70,130 Q60,120 55,110 Q50,100 50,90 Q50,70 60,60 Q70,50 85,55 Q100,60 110,75 Q120,90 115,110 Q110,130 100,150" fill="#8B4513" stroke="#654321" stroke-width="3"/>
-        <!-- Head -->
-        <ellipse cx="45" cy="85" rx="25" ry="20" fill="#654321"/>
-        <circle cx="35" cy="80" r="5" fill="#000"/>
-        <path d="M30,75 Q20,70 15,75" fill="none" stroke="#FF4500" stroke-width="3"/>
-        <!-- Wings -->
-        <path d="M110,100 Q150,50 200,70 Q220,80 210,100 Q200,120 150,110 Q120,105 110,100" fill="url(#wingGrad)" opacity="0.9"/>
-        <path d="M110,100 Q70,60 30,80 Q20,90 30,110 Q70,125 110,100" fill="url(#wingGrad)" opacity="0.9" transform="scale(-1,1) translate(-220,0)"/>
-        <!-- Tail -->
-        <path d="M100,150 Q90,170 85,190 Q80,210 90,225 Q100,240 120,235 Q140,230 150,220" fill="#8B4513" stroke="#654321" stroke-width="3"/>
-        <!-- Spikes -->
-        <path d="M80,60 L75,50 L70,60 M95,65 L90,55 L85,65 M110,75 L105,65 L100,75" fill="none" stroke="#FF4500" stroke-width="2"/>
-      </svg>
-    </div>
+    <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+      <!-- Body -->
+      <ellipse cx="250" cy="220" rx="100" ry="120" fill="#2c3e50" stroke="#1a252f" stroke-width="4"/>
+      <!-- Belly -->
+      <ellipse cx="250" cy="240" rx="70" ry="90" fill="#34495e"/>
+      <!-- Head -->
+      <ellipse cx="250" cy="100" rx="80" ry="70" fill="#2c3e50"/>
+      <!-- Snout -->
+      <ellipse cx="250" cy="80" rx="50" ry="35" fill="#34495e"/>
+      <!-- Eyes -->
+      <circle cx="225" cy="90" r="12" fill="#e74c3c"/>
+      <circle cx="275" cy="90" r="12" fill="#e74c3c"/>
+      <circle cx="228" cy="88" r="5" fill="#fff"/>
+      <circle cx="278" cy="88" r="5" fill="#fff"/>
+      <!-- Horns -->
+      <path d="M200,60 Q190,40 195,20" fill="none" stroke="#f1c40f" stroke-width="8" stroke-linecap="round"/>
+      <path d="M300,60 Q310,40 305,20" fill="none" stroke="#f1c40f" stroke-width="8" stroke-linecap="round"/>
+      <!-- Wings -->
+      <path d="M150,200 Q100,150 80,180 Q70,220 100,240 Q130,220 150,200" fill="#e67e22" opacity="0.9"/>
+      <path d="M350,200 Q400,150 420,180 Q430,220 400,240 Q370,220 350,200" fill="#e67e22" opacity="0.9"/>
+      <!-- Spikes on back -->
+      <path d="M180,180 L170,160 L160,180 M210,170 L200,150 L190,170 M240,165 L230,145 L220,165 M270,170 L260,150 L250,170 M300,180 L290,160 L280,180" fill="none" stroke="#f1c40f" stroke-width="4"/>
+      <!-- Tail -->
+      <path d="M250,320 Q220,350 200,340 Q180,330 190,310 Q200,290 220,300 Q240,310 250,320" fill="#2c3e50"/>
+      <!-- Fire breath (subtle glow) -->
+      <ellipse cx="250" cy="60" rx="40" ry="25" fill="#ff6b35" opacity="0.6" filter="blur(10px)"/>
+    </svg>
   </div>
 
   <!-- DARK MODE BUTTON -->
-  <button id="darkModeBtn" onclick="toggleDarkMode()" style="position:fixed;top:20px;right:20px;padding:12px 24px;background:#0ff;color:#000;border:none;border-radius:50px;font-weight:800;cursor:pointer;box-shadow:0 0 30px #0ff;z-index:1000;font-family:Poppins;">
-    DARK MODE
-  </button>
+  <button id="darkModeBtn" onclick="toggleDarkMode()">DARK MODE</button>
 
   <div class="login" id="login">
     <h1>ROBUX EMPIRE</h1>
@@ -190,7 +346,7 @@
         });
         document.getElementById('total').textContent = total.toLocaleString();
         document.getElementById('total2').textContent = total.toLocaleString();
-        document.getElementById('logs').innerHTML = html.join('') || "<h1 style='color:#fff;'>WAITING FOR DROP</h1>";
+        document.getElementById('logs').innerHTML = html.join('') || "<h1 style='color:#e0f7fa;'>WAITING FOR DROP</h1>";
         if (arr.length > lastCount) {
           const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
           audio.play().catch(() => {});
@@ -207,8 +363,8 @@
       const btn = document.getElementById('darkModeBtn');
       const isDark = document.body.classList.contains('dark');
       btn.textContent = isDark ? 'LIGHT MODE' : 'DARK MODE';
-      btn.style.background = isDark ? '#000' : '#0ff';
-      btn.style.color = isDark ? '#0ff' : '#000';
+      btn.style.background = isDark ? 'linear-gradient(45deg, #000, #111)' : 'linear-gradient(45deg, #00d4ff, #0088cc)';
+      btn.style.color = isDark ? '#00ff88' : '#000';
       localStorage.setItem('darkMode', isDark);
     }
 
@@ -217,8 +373,8 @@
         document.body.classList.add('dark');
         const btn = document.getElementById('darkModeBtn');
         btn.textContent = 'LIGHT MODE';
-        btn.style.background = '#000';
-        btn.style.color = '#0ff';
+        btn.style.background = 'linear-gradient(45deg, #000, #111)';
+        btn.style.color = '#00ff88';
       }
     });
   </script>
